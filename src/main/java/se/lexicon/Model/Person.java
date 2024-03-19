@@ -1,5 +1,7 @@
 package se.lexicon.Model;
 
+import java.security.PublicKey;
+
 public class Person {
     //Fields
     private int id;
@@ -51,7 +53,10 @@ public class Person {
     }
 
     //Methods
+    public String getName(){
+        return firstName + " " +  lastName;
+    }
     public void getSummary(){
-        System.out.println("ID: " + id+ ", Name: " + firstName + " " + lastName+ ", Email: " + email );
+        System.out.println("ID: " + id+ ", Name: " + getName()+ ", Email: " + email );
     }
 }
