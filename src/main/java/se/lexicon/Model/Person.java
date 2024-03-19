@@ -14,7 +14,7 @@ public class Person {
     //Setters
 
     public void setFirstName(String firstName) {
-        if (firstName == null || firstName.trim().isEmpty()){
+        if (firstName == null || firstName.trim().isEmpty()) {
             throw new IllegalArgumentException("Firstname cannot be null or empty");
         }
         this.firstName = firstName;
@@ -53,10 +53,11 @@ public class Person {
     }
 
     //Methods
-    public String getName(){
-        return firstName + " " +  lastName;
+    public String getName() {
+        return firstName + " " + lastName;
     }
-    public void getSummary(){
-        System.out.println("ID: " + id+ ", Name: " + getName()+ ", Email: " + email );
+
+    public void getSummary() {
+        System.out.println("ID: " + id + ", Name: " + getName() + ", Email: " + email);
     }
 }

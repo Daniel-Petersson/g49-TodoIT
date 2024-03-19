@@ -62,15 +62,16 @@ public class TodoItemTask {
     }
 
     //Methods
-    public boolean isOverdue(){
-        if (this.deadLine.isAfter(LocalDate.now())){
+    public boolean isOverdue() {
+        if (this.deadLine.isAfter(LocalDate.now())) {
             return true;
         }
         return false;
     }
-    public void getSummary(){
-        System.out.println("ID: " + id+ ", Title: " + title+ ", Description: " + taskDescription+ ", Deadline: " + deadLine+ ", Done: " + done);
-        if(creator != null){
+
+    public void getSummary() {
+        System.out.println("ID: " + id + ", Title: " + title + ", Description: " + taskDescription + ", Deadline: " + deadLine + ", Done: " + done);
+        if (creator != null) {
             System.out.print(" Creator Name: " + creator.getName());
         } else {
             System.out.print(" No owner assigned.");
