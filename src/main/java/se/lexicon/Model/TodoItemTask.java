@@ -1,38 +1,32 @@
 package se.lexicon.Model;
 
-import java.time.LocalDate;
-
 public class TodoItemTask {
     //Fields
     private int id;
-    private String title;
-    private String taskDescription;
-    private LocalDate deadLine;
-    private boolean done;
-    private Person creator;
-
+    private boolean assigned;
+    private TodoItem todoItem;
+    private Person assignee;
     //Constructor
 
     //Setters
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setAssigned(boolean assigned) {
+        this.assigned = assigned;
+
     }
 
-    public void setTaskDescription(String description) {
-        this.taskDescription = description;
+    public void setTodoItem(TodoItem todoItem) {
+        if (todoItem == null ) {
+            throw new IllegalArgumentException("Todo item description cannot be null or empty.");
+        }
+        this.todoItem = todoItem;
     }
 
-    public void setDeadLine(String deadLine) {
-        this.deadLine = LocalDate.parse(deadLine);
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
-    }
-
-    public void setCreator(Person creator) {
-        this.creator = creator;
+    public void setAssignee(Person assignee) {
+        if (assignee == null) {
+            throw new IllegalArgumentException("Title cannot be null or empty.");
+        }
+        this.assignee = assignee;
     }
 
     //Getters
@@ -41,38 +35,20 @@ public class TodoItemTask {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public TodoItem getTodoItem() {
+        return todoItem;
     }
 
-    public String getTaskDescription() {
-        return taskDescription;
-    }
-
-    public LocalDate getDeadLine() {
-        return deadLine;
-    }
-
-    public boolean isDone() {
-        return done;
-    }
-
-    public Person getCreator() {
-        return creator;
+    public Person getAssignee() {
+        return assignee;
     }
 
     //Methods
-    public boolean isOverdue() {
-        if (this.deadLine.isAfter(LocalDate.now())) {
-            return true;
-        }
-        return false;
-    }
 
     public void getSummary() {
-        System.out.println("ID: " + id + ", Title: " + title + ", Description: " + taskDescription + ", Deadline: " + deadLine + ", Done: " + done);
-        if (creator != null) {
-            System.out.print(" Creator Name: " + creator.getName());
+        System.out.println("ID: " + id + ", Assigned: " + assigned + ", TodoItem: " + todoItem);
+        if (assignee != null) {
+            System.out.print(" Assigned Name: " + assignee.getName());
         } else {
             System.out.print(" No owner assigned.");
         }
