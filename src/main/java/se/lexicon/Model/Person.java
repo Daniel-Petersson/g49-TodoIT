@@ -1,6 +1,7 @@
 package se.lexicon.Model;
 
 import java.security.PublicKey;
+import java.util.Objects;
 
 public class Person {
     //Fields
@@ -8,6 +9,7 @@ public class Person {
     private String firstName;
     private String lastName;
     private String email;
+    private AppUser credentials;
 
     //Constructors
 
@@ -34,7 +36,10 @@ public class Person {
         this.email = email;
     }
 
-    //Getters
+    public void setCredentials(AppUser credentials) {
+        this.credentials = credentials;
+    }
+//Getters
 
     public int getId() {
         return id;
@@ -52,12 +57,31 @@ public class Person {
         return email;
     }
 
+    public AppUser getCredentials() {
+        return credentials;
+    }
+
     //Methods
     public String getName() {
         return firstName + " " + lastName;
     }
 
-    public void getSummary() {
-        System.out.println("ID: " + id + ", Name: " + getName() + ", Email: " + email);
+    @Override
+    public String toString() {
+        return "Person { " + "id: " + id + ", Name: " + getName() + ", Email: " + email + "}";
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Person person = (Person) obj;
+        return id == person.id && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(email, person.email);
     }
 }

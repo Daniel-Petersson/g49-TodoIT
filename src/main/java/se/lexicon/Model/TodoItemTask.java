@@ -1,5 +1,7 @@
 package se.lexicon.Model;
 
+import java.util.Objects;
+
 public class TodoItemTask {
     //Fields
     private int id;
@@ -16,7 +18,7 @@ public class TodoItemTask {
     }
 
     public void setTodoItem(TodoItem todoItem) {
-        if (todoItem == null ) {
+        if (todoItem == null) {
             throw new IllegalArgumentException("Todo item description cannot be null or empty.");
         }
         this.todoItem = todoItem;
@@ -44,15 +46,21 @@ public class TodoItemTask {
     }
 
     //Methods
-
-    public void getSummary() {
-        System.out.println("ID: " + id + ", Assigned: " + assigned + ", TodoItem: " + todoItem);
-        if (assignee != null) {
-            System.out.print(" Assigned Name: " + assignee.getName());
-        } else {
-            System.out.print(" No owner assigned.");
-        }
-        System.out.println();
+    @Override
+    public String toString() {
+        return "ToDoItemTask { " + "id: " + id + ", Assigned: " + assigned + ", TodoItem: " + todoItem + "}";
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, todoItem, assigned);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        TodoItemTask task = (TodoItemTask) obj;
+        return id == task.id && assigned == task.assigned && Objects.equals(todoItem, task.todoItem);
+    }
 }

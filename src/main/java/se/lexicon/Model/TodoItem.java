@@ -1,6 +1,7 @@
 package se.lexicon.Model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class TodoItem {
     //Fields
@@ -27,7 +28,7 @@ public class TodoItem {
     }
 
     public void setDeadLine(String deadLine) {
-        if (deadLine== null){
+        if (deadLine == null) {
             throw new IllegalArgumentException("Deadline cannot be null or empty");
         }
         this.deadLine = LocalDate.parse(deadLine);
@@ -75,13 +76,21 @@ public class TodoItem {
         return false;
     }
 
-    public void getSummary() {
-        System.out.println("ID: " + id + ", Title: " + title + ", Description: " + taskDescription + ", Deadline: " + deadLine + ", Done: " + done);
-        if (creator != null) {
-            System.out.print(" Creator Name: " + creator.getName());
-        } else {
-            System.out.print(" No owner assigned.");
-        }
-        System.out.println();
+    @Override
+    public String toString() {
+        return "ToDoItem { " + "id: " + id + ", Title: " + title + ", Description: " + taskDescription + ", Deadline: " + deadLine + ", Done: " + done + ", Creator: " + creator + "}";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, taskDescription, deadLine, done, creator);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        TodoItem task = (TodoItem) obj;
+        return id == task.id && done == task.done && Objects.equals(title, task.title) && Objects.equals(taskDescription, task.taskDescription) && Objects.equals(deadLine, task.deadLine) && Objects.equals(creator, task.creator);
     }
 }
