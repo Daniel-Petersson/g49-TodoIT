@@ -1,5 +1,7 @@
 package se.lexicon.Model;
 
+import java.util.Objects;
+
 public class AppUser {
     //Fields
     private String username;
@@ -7,6 +9,12 @@ public class AppUser {
     private AppRole role;
 
     //Constructors
+
+    public AppUser(String username, String password, AppRole role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     //Setters
 
@@ -45,5 +53,25 @@ public class AppUser {
         return role;
     }
 
+
+
     //Methods
+    @Override
+    public String toString(){
+        return "AppUser { "+ "Username: " + getUsername() +", AppRole: "+ getRole()+" }";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, role);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this==obj) return true;
+        if (obj==null || getClass() != obj.getClass()) return false;
+        AppUser appUser = (AppUser) obj;
+        return Objects.equals(username, appUser.username) && role == appUser.role;
+
+    }
 }
