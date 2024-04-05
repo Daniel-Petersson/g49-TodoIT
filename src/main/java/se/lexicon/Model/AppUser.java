@@ -1,5 +1,7 @@
 package se.lexicon.Model;
 
+import se.lexicon.DAO.IAppUserDAO;
+
 import java.util.Objects;
 
 public class AppUser {
