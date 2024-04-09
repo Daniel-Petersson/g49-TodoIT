@@ -20,7 +20,7 @@ public class AppUserDAOCollection implements IAppUserDAO {
 
         for (AppUser existingUser : users) {
             if (existingUser.getUsername().equalsIgnoreCase(appUser.getUsername())) {
-                throw new IllegalArgumentException("Username already exists");
+                throw new IllegalArgumentException("Username " + appUser.getUsername() + " already exists");
             }
         }
         users.add(appUser);
@@ -29,6 +29,10 @@ public class AppUserDAOCollection implements IAppUserDAO {
 
     @Override
     public AppUser findByUsername(String username) {
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be null or empty");
+        }
+
         for (AppUser user : users) {
             if (user.getUsername().equalsIgnoreCase(username)) {
                 return user;

@@ -21,7 +21,7 @@ public class PersonDAOCollection implements IPersonDAO {
         }
         for (Person existingPerson : persons) {
             if (existingPerson.getId() == person.getId()) {
-                throw new IllegalArgumentException("Person already exist");
+                throw new IllegalArgumentException("Person with id: " + person.getId() + " already exists");
             }
         }
         persons.add(person);
@@ -30,7 +30,7 @@ public class PersonDAOCollection implements IPersonDAO {
 
     @Override
     public Person findById(int id) {
-        if (id < 0) {
+        if (id <= 0) {
             throw new IllegalArgumentException("Id cannot be negative");
         }
 
@@ -44,7 +44,8 @@ public class PersonDAOCollection implements IPersonDAO {
 
     @Override
     public Person findByEmail(String email) {
-        if (email == null || !email.contains("@")) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        if (email == null || !email.matches(emailRegex)) {
             throw new IllegalArgumentException("Invalid email format");
         }
 
@@ -63,10 +64,10 @@ public class PersonDAOCollection implements IPersonDAO {
 
     @Override
     public void remove(int id) {
-        if (id <0) {
+        if (id < 0) {
             throw new IllegalArgumentException("Id cannot be negative");
         }
-        persons.removeIf(person -> person.getId()== id);
+        persons.removeIf(person -> person.getId() == id);
 
     }
 }
