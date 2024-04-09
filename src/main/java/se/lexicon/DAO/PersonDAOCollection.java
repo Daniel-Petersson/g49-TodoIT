@@ -29,7 +29,7 @@ public class PersonDAOCollection implements IPersonDAO {
     }
 
     @Override
-    public Person findById(Integer id) {
+    public Person findById(int id) {
         if (id < 0) {
             throw new IllegalArgumentException("Id cannot be negative");
         }
@@ -62,8 +62,8 @@ public class PersonDAOCollection implements IPersonDAO {
     }
 
     @Override
-    public void remove(Integer id) {
-        if (id == null) {
+    public void remove(int id) {
+        if (id <0) {
             throw new IllegalArgumentException("Id cannot be negative");
         }
         persons.removeIf(person -> person.getId()== id);
