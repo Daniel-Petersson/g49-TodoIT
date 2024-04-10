@@ -1,4 +1,4 @@
-package se.lexicon.Model;
+package se.lexicon.model;
 
 import java.time.LocalDate;
 import java.util.Objects;
