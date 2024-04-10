@@ -6,8 +6,8 @@ import java.util.Optional;
 
 public interface IPersonDAO {
     Person persist(Person person);
-    Optional<Person> findById(int id);//int or Person for input?
-    Optional<Person> findByEmail(String email);
-    Collection<Person> findAll();
+    Optional<Person> find(int id);//int or Person for input?
+    Optional<Person> find(String email);
+    Collection<Person> find();
     void remove(int id);
 }

@@ -9,12 +9,11 @@ import java.util.Optional;
 
 public interface ITodoItemDAO {
     TodoItem persist(TodoItem todoItem);
-    Optional<TodoItem> findById(int id);
-    Collection<TodoItem> findAllByDoneStatus(boolean done);
-    Collection<TodoItem> findByTitleContains(String title);
+    Optional<TodoItem> find(int id);
+    Collection<TodoItem> find(boolean done);
+    Collection<TodoItem> find(String title);
     Collection<TodoItem> findByPersonId(int personId);
-    Collection<TodoItem> findByDeadlineBefore(LocalDate date);
-    Collection<TodoItem> findByDeadlineAfter(LocalDate date);
+    Collection<TodoItem> find(LocalDate date, boolean isBefore);
     void remove(int id);
 
 }

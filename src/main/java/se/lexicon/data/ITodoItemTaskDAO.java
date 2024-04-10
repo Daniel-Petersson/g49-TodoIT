@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface ITodoItemTaskDAO {
     TodoItemTask persist(TodoItemTask todoItemTask);
-    Optional<TodoItemTask> findById(int id);
-    Collection<TodoItemTask> findAll();
-    Collection<TodoItemTask> findByAssignedStatus(boolean status);
+    Optional<TodoItemTask> find(int id);
+    Collection<TodoItemTask> find();
+    Collection<TodoItemTask> find(boolean status);
     Collection<TodoItemTask> findByPersonId(int id);
     void remove(int id);
 }

@@ -30,7 +30,7 @@ public class PersonDAOCollection implements IPersonDAO {
         if (person == null) {
             throw new IllegalArgumentException("Person cannot be null");
         }
-        Optional<Person> personOptional = findById(person.getId());
+        Optional<Person> personOptional = find(person.getId());
         if (personOptional.isPresent()) throw new IllegalArgumentException("Person already exist");
 
         int id = PersonIdSequencer.nextId();
@@ -44,7 +44,7 @@ public class PersonDAOCollection implements IPersonDAO {
      * @return An Optional containing the found Person, or an empty Optional if no Person was found.
      */
     @Override
-    public Optional<Person> findById(int id) {
+    public Optional<Person> find(int id) {
         for (Person personId : persons) {
             if (personId.getId() == id) {
                 return Optional.of(personId);
@@ -60,7 +60,7 @@ public class PersonDAOCollection implements IPersonDAO {
      * @throws IllegalArgumentException If the email is null or does not match the required format.
      */
     @Override
-    public Optional<Person> findByEmail(String email) {
+    public Optional<Person> find(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
         if (email == null || !email.matches(emailRegex)) {
             throw new IllegalArgumentException("Invalid email format");
@@ -79,7 +79,7 @@ public class PersonDAOCollection implements IPersonDAO {
      * @return A Collection containing all Person objects.
      */
     @Override
-    public Collection<Person> findAll() {
+    public Collection<Person> find() {
         return new ArrayList<>(persons);
     }
 
@@ -90,7 +90,7 @@ public class PersonDAOCollection implements IPersonDAO {
      */
     @Override
     public void remove(int id) {
-        Optional<Person> personOptional = findById(id);
+        Optional<Person> personOptional = find(id);
         if (!personOptional.isPresent()) {
             throw new IllegalArgumentException("Person id not found");
         }

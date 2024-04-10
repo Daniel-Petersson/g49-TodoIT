@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface IAppUserDAO {
     AppUser persist(AppUser appUser);
-    Optional<AppUser> findByUsername(String username);
-    Collection<AppUser> findAll();
+    Optional<AppUser> find(String username);
+    Collection<AppUser> find();
     void remove(String username);
 
 }

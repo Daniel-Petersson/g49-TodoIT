@@ -3,7 +3,6 @@ package se.lexicon.data.impl;
 import se.lexicon.data.ITodoItemTaskDAO;
 import se.lexicon.data.sequencers.TodoItemTaskIdSequencer;
 import se.lexicon.model.TodoItemTask;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,7 +16,7 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
     /**
      * A list of TodoItemTask objects. This list is used to store all the TodoItemTask instances managed by this DAO.
      */
-    private List<TodoItemTask> itemTasks = new ArrayList<>();
+    private final List<TodoItemTask> itemTasks = new ArrayList<>();
 
     /**
      * Method to persist a TodoItemTask object.
@@ -28,9 +27,9 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
     @Override
     public TodoItemTask persist(TodoItemTask todoItemTask) {
         if (todoItemTask == null) throw new IllegalArgumentException("Todo Item Task cannot be null");
-        Optional<TodoItemTask> taskOptional = findById(todoItemTask.getId());
+        Optional<TodoItemTask> taskOptional = find(todoItemTask.getId());
         if (taskOptional.isPresent()) throw new IllegalArgumentException("Task already exist");
-
+        int id = TodoItemTaskIdSequencer.nextId();
         itemTasks.add(todoItemTask);
         return todoItemTask;
     }
@@ -41,7 +40,7 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
      * @return An Optional containing the found TodoItemTask, or an empty Optional if no TodoItemTask was found.
      */
     @Override
-    public Optional<TodoItemTask> findById(int id) {
+    public Optional<TodoItemTask> find(int id) {
         for (TodoItemTask existingId : itemTasks) {
             if (existingId.getId() == id) {
                 return Optional.of(existingId);
@@ -55,7 +54,7 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
      * @return A Collection containing all TodoItemTask objects.
      */
     @Override
-    public Collection<TodoItemTask> findAll() {
+    public Collection<TodoItemTask> find() {
         return new ArrayList<>(itemTasks);
     }
 
@@ -65,7 +64,7 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
      * @return A Collection containing all TodoItemTask objects with the given assigned status.
      */
     @Override
-    public Collection<TodoItemTask> findByAssignedStatus(boolean status) {
+    public Collection<TodoItemTask> find(boolean status) {
         List<TodoItemTask> assignedItems = new ArrayList<>();
         for (TodoItemTask item : itemTasks) {
             if (item.isAssigned() == status) {
@@ -98,7 +97,7 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
      */
     @Override
     public void remove(int id) {
-        Optional<TodoItemTask> taskOptional = findById(id);
+        Optional<TodoItemTask> taskOptional = find(id);
         if (!taskOptional.isPresent()) {
             throw new IllegalArgumentException("Task not found");
         }
