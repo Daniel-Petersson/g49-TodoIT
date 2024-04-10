@@ -25,7 +25,7 @@ public class AppUserDAOCollection implements IAppUserDAO {
         if (appUser == null) {
             throw new IllegalArgumentException("AppUser cannot be null");
         }
-        Optional<AppUser> optionalAppUser = findByUsername(appUser.getUsername());
+        Optional<AppUser> optionalAppUser = find(appUser.getUsername());
         if (optionalAppUser.isPresent()) {
             throw new IllegalArgumentException("User already exist");
         }
@@ -39,7 +39,7 @@ public class AppUserDAOCollection implements IAppUserDAO {
      * @return An Optional containing the found AppUser, or an empty Optional if no AppUser was found.
      */
     @Override
-    public Optional<AppUser> findByUsername(String username) {
+    public Optional<AppUser> find(String username) {
         for (AppUser user : users) {
             if (user.getUsername().equalsIgnoreCase(username)) {
                 return Optional.of(user);
@@ -53,7 +53,7 @@ public class AppUserDAOCollection implements IAppUserDAO {
      * @return A Collection containing all AppUser objects.
      */
     @Override
-    public Collection<AppUser> findAll() {
+    public Collection<AppUser> find() {
         return new ArrayList<>(users); //In general, if you want to prevent external code from modifying your class's internal state, it's a good practice to return a new copy of the collection.
     }
 
@@ -64,7 +64,7 @@ public class AppUserDAOCollection implements IAppUserDAO {
      */
     @Override
     public void remove(String username) {
-        Optional<AppUser> optionalAppUser = findByUsername(username);
+        Optional<AppUser> optionalAppUser = find(username);
         if (!optionalAppUser.isPresent()) {
             throw new IllegalArgumentException("User not found");
         }
