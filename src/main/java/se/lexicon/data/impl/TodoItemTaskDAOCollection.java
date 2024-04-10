@@ -24,13 +24,8 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
         Optional<TodoItemTask> taskOptional = findById(todoItemTask.getId());
         if (taskOptional.isPresent()) throw new IllegalArgumentException("Task already exist");
 
-        // Generate a new id for the TodoItemTask
-        int id = TodoItemTaskIdSequencer.nextId();
-
-        // Add the TodoItemTask to the list
+        // If the TodoItemTask is not null and does not already exist in the list, add it to the list
         itemTasks.add(todoItemTask);
-
-        // Return the persisted TodoItemTask
         return todoItemTask;
     }
 
