@@ -1,7 +1,7 @@
-package se.lexicon.Sequencers;
+package se.lexicon.data.sequencers;
 
 public class TodoItemSequencer {
-    private static int currentId;
+    private static int currentId = 1000;
 
     public static int nextId() {
         return currentId++;

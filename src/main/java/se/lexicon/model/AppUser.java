@@ -1,6 +1,4 @@
-package se.lexicon.Model;
-
-import se.lexicon.DAO.IAppUserDAO;
+package se.lexicon.model;
 
 import java.util.Objects;
 

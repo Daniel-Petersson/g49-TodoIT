@@ -1,6 +1,6 @@
 package se.lexicon;
 
-import se.lexicon.Model.*;
+import se.lexicon.model.*;
 
 /**
  * Hello world!
@@ -56,5 +56,7 @@ public class App
         System.out.println(appUser.toString());
         System.out.println(appUser.hashCode());
         System.out.println(appUser.equals(appUser1));//true
+
+
     }
 }

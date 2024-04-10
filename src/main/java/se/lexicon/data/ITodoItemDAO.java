@@ -1,14 +1,15 @@
-package se.lexicon.DAO;
+package se.lexicon.data;
 
-import se.lexicon.Model.TodoItem;
+import se.lexicon.model.TodoItem;
 
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Optional;
 
 public interface ITodoItemDAO {
     TodoItem persist(TodoItem todoItem);
-    TodoItem findById(int id);
+    Optional<TodoItem> findById(int id);
     Collection<TodoItem> findAllByDoneStatus(boolean done);
     Collection<TodoItem> findByTitleContains(String title);
     Collection<TodoItem> findByPersonId(int personId);

@@ -1,6 +1,5 @@
-package se.lexicon.Model;
+package se.lexicon.model;
 
-import java.security.PublicKey;
 import java.util.Objects;
 
 public class Person {
