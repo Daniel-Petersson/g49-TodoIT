@@ -11,33 +11,64 @@ public class AppUserDAOCollectionTest {
         // TODO: Initialize some AppUser instances for testing
     }
 
+    // Test the persist method
     @Test
-    void testPersist() {
-        // TODO: Test if a new AppUser can be persisted successfully
-        // TODO: Test if IllegalArgumentException is thrown when trying to persist a null AppUser
-        // TODO: Test if EntityAlreadyExistsException is thrown when trying to persist an AppUser that already exists
+    public void testPersist() {
+        // Call the persist method on testObject with appUser
+        // Store the returned AppUser in a variable
+
+        // Print out the state of the testObject and the AppUser
+
+        // Retrieve all AppUsers from the testObject
+
+        // Assert that the testObject now contains the appUser
+    }
+
+    // Test the find method
+    @Test
+    public void testFindById() {
+        // Add appUser to testObject
+
+        // Call the find method on testObject with the id of appUser
+
+        // Assert that the returned AppUser is the same as the appUser that was added
     }
 
     @Test
-    void testFind_byUsername() {
-        // TODO: Test if an AppUser can be found by username
-        // TODO: Test if an empty Optional is returned when trying to find an AppUser with a username that does not exist
+    public void testFindByUsername() {
+        // Add AppUsers with different usernames to testObject
+
+        // Call find with username
+
+        // Assert that the returned Collection contains the correct AppUser
     }
 
     @Test
-    void testFind_allUsers() {
-        // TODO: Test if all AppUser instances can be found
-        // TODO: Test if an empty collection is returned when there are no AppUser instances
+    public void testFindAll() {
+        // Add AppUsers to testObject
+
+        // Call find method without parameters
+
+        // Assert that the returned Collection contains all the AppUsers
     }
 
     @Test
-    void testRemove() {
-        // TODO: Test if an AppUser can be removed by username
-        // TODO: Test if an empty Optional is returned when trying to remove an AppUser with a username that does not exist
+    public void testRemove() {
+        // Add appUser to testObject
+
+        // Call the remove method on testObject with the id of appUser
+
+        // Assert that an AppUser was removed
+
+        // Retrieve all AppUsers from the testObject
+
+        // Assert that the testObject no longer contains the appUser
     }
 
-    @AfterEach
-    void tearDown() {
-        // TODO: Clear the users map in the testObject instance to ensure isolation between test cases
+    @Test
+    public void testRemoveNonExistingItem() {
+        // Call the remove method on testObject with a non-existing id
+
+        // Assert that the returned Optional is empty
     }
 }

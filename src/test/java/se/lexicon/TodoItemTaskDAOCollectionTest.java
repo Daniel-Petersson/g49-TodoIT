@@ -11,61 +11,73 @@ public class TodoItemTaskDAOCollectionTest {
         // TODO: Initialize the TodoItemTaskDAOCollection instance
     }
 
+    // Test the persist method
     @Test
     public void testPersist() {
-        // TODO: Create a new TodoItemTask
+        // Call the persist method on testObject with todoItemTask
+        // Store the returned TodoItemTask in a variable
 
-        // TODO: Call the persist method on TodoItemTaskDAOCollection with the new TodoItemTask
+        // Print out the state of the testObject and the TodoItemTask
 
-        // TODO: Retrieve the persisted TodoItemTask from TodoItemTaskDAOCollection
+        // Retrieve all TodoItemTasks from the testObject
 
-        // TODO: Assert that the retrieved TodoItemTask is the same as the one we added
+        // Assert that the testObject now contains the todoItemTask
     }
 
+    // Test the find method
     @Test
     public void testFindById() {
-        // TODO: Add a TodoItemTask to TodoItemTaskDAOCollection
+        // Add todoItemTask to testObject
 
-        // TODO: Call the find method on TodoItemTaskDAOCollection with the id of the added TodoItemTask
+        // Call the find method on testObject with the id of todoItemTask
 
-        // TODO: Assert that the returned TodoItemTask is the same as the one we added
-    }
-
-    @Test
-    public void testFindAll() {
-        // TODO: Add multiple TodoItemTasks to TodoItemTaskDAOCollection
-
-        // TODO: Call the find method on TodoItemTaskDAOCollection
-
-        // TODO: Assert that the returned Collection contains all the TodoItemTasks we added
+        // Assert that the returned TodoItemTask is the same as the todoItemTask that was added
     }
 
     @Test
     public void testFindByAssignedStatus() {
-        // TODO: Add TodoItemTasks with different assigned statuses to TodoItemTaskDAOCollection
+        // Add TodoItemTasks with different assigned statuses to testObject
 
-        // TODO: Call the find method on TodoItemTaskDAOCollection with a specific assigned status
+        // Call find with assigned status
 
-        // TODO: Assert that the returned Collection contains all the TodoItemTasks with the specified assigned status
+        // Assert that the returned Collection contains the correct TodoItemTask
+    }
+
+    @Test
+    public void testFindAll() {
+        // Add TodoItemTasks to testObject
+
+        // Call find method without parameters
+
+        // Assert that the returned Collection contains all the TodoItemTasks
     }
 
     @Test
     public void testFindByPersonId() {
-        // TODO: Add TodoItemTasks assigned to different persons to TodoItemTaskDAOCollection
+        // Add TodoItemTasks assigned to different persons to testObject
 
-        // TODO: Call the findByPersonId method on TodoItemTaskDAOCollection with a specific person id
+        // Call findByPersonId with personId
 
-        // TODO: Assert that the returned Collection contains all the TodoItemTasks assigned to the person with the specified id
+        // Assert that the returned Collection contains the correct TodoItemTask
     }
 
     @Test
     public void testRemove() {
-        // TODO: Add a TodoItemTask to TodoItemTaskDAOCollection
+        // Add todoItemTask to testObject
 
-        // TODO: Call the remove method on TodoItemTaskDAOCollection with the id of the added TodoItemTask
+        // Call the remove method on testObject with the id of todoItemTask
 
-        // TODO: Assert that the returned TodoItemTask is the same as the one we removed
+        // Assert that a TodoItemTask was removed
 
-        // TODO: Assert that the TodoItemTask is no longer in the TodoItemTaskDAOCollection
+        // Retrieve all TodoItemTasks from the testObject
+
+        // Assert that the testObject no longer contains the todoItemTask
+    }
+
+    @Test
+    public void testRemoveNonExistingItem() {
+        // Call the remove method on testObject with a non-existing id
+
+        // Assert that the returned Optional is empty
     }
 }

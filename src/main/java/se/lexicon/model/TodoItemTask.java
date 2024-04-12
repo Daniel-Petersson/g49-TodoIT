@@ -36,6 +36,8 @@ public class TodoItemTask {
     }
 
     //Getters
+    
+
 
     public int getId() {
         return id;

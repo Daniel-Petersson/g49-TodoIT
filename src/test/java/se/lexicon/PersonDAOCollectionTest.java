@@ -1,59 +1,130 @@
 package se.lexicon;
 
-public class PersonDAOCollectionTest {
-    package se.lexicon;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.lexicon.data.impl.PersonDAOCollection;
+import se.lexicon.exception.EntityAlreadyExistsException;
 import se.lexicon.model.Person;
 
-    public class PersonDAOCollectionTest {
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
-        private PersonDAOCollection testObject;
+import static org.junit.jupiter.api.Assertions.*;
 
-        @BeforeEach
-        void setUp() {
-            // TODO: Initialize testObject
-            // TODO: Initialize some Person instances for testing
-        }
+public class PersonDAOCollectionTest {
 
-        @Test
-        void testPersist() {
-            // TODO: Test if a new Person can be persisted successfully
-            // TODO: Test if IllegalArgumentException is thrown when trying to persist a null Person
-            // TODO: Test if EntityAlreadyExistsException is thrown when trying to persist a Person that already exists
-        }
+    private PersonDAOCollection testObject;
+    private Person person; // Declare person as a field
+    private Person person1;
 
-        @Test
-        void testFind_byId() {
-            // TODO: Test if a Person can be found by id
-            // TODO: Test if an empty Optional is returned when trying to find a Person with an id that does not exist
-        }
+    @BeforeEach
+    public void setUp() {
+        // Initialize testObject
+        testObject = new PersonDAOCollection();
+        // Initialize some Person instances for testing
+        person = new Person();
+        person.setFirstName("Test");
+        person.setLastName("Testsson");
+        person.setEmail("Test@test.se");
 
-        @Test
-        void testFind_byEmail() {
-            // TODO: Test if a Person can be found by email
-            // TODO: Test if an empty Optional is returned when trying to find a Person with an email that does not exist
-            // TODO: Test if IllegalArgumentException is thrown when trying to find a Person with an invalid email format
-        }
+        person1 = new Person();
+        person1.setFirstName("Tset");
+        person1.setLastName("Testsson");
 
-        @Test
-        void testFind_allPersons() {
-            // TODO: Test if all Person instances can be found
-            // TODO: Test if an empty collection is returned when there are no Person instances
-        }
 
-        @Test
-        void testRemove() {
-            // TODO: Test if a Person can be removed by id
-            // TODO: Test if an empty Optional is returned when trying to remove a Person with an id that does not exist
-        }
 
-        @AfterEach
-        void tearDown() {
-            // TODO: Clear the persons map in the testObject instance to ensure isolation between test cases
-        }
+    }
+    // Test the persist method
+    @Test
+    public void testPersist() {
+        // Test if a new Person can be persisted successfully
+        Person actualValue = testObject.persist(person);
+        Person expectedValue = person;
+        // Assert
+        // Check if create method creates customer
+        assertEquals(expectedValue, actualValue);
+        // Test if EntityAlreadyExistsException is thrown when trying to persist a Person that already exists
+        assertThrows(EntityAlreadyExistsException.class, () -> testObject.persist(person));
+
+    }
+
+    @Test
+    void testFind_byId() {
+        // Add person to testObject
+        testObject.persist(person);
+
+        // Call the find method on testObject with the id of person
+        Optional<Person> foundPerson = testObject.find(person.getId());
+
+
+        assertTrue(foundPerson.isPresent());
+
+        // Assert that the returned Person is the same as the person that was added
+        assertEquals(person, foundPerson.get());
+    }
+
+    @Test
+    void testFind_byEmail() {
+        // Add Person can be found by email
+        testObject.persist(person);
+        // Call find with email
+        Optional<Person> noEmail = testObject.find("no@email.no");
+        // Test if an empty Optional is returned when trying to find a Person with an email that does not exist
+        assertFalse(noEmail.isPresent());
+
+        // Test if a Person can be found by email
+        Optional<Person> email = testObject.find(person.getEmail());
+        assertTrue(email.isPresent());
+        assertEquals(person, email.get());
+
+        // Test if IllegalArgumentException is thrown when trying to find a Person with an invalid email format
+        assertThrows(IllegalArgumentException.class, () -> testObject.find("invalid email format"));
+    }
+
+    // Test the find method
+    @Test
+    void testFind_allPersons() {
+        // Arrange
+        Person person2 = new Person();
+        Person person3 = new Person();
+        testObject.persist(person2);
+        testObject.persist(person3);
+
+        // Act
+        Collection<Person> result = testObject.find();
+        // Assert
+        assertEquals(2,result.size());
+        assertTrue(result.contains(person2));
+        assertTrue(result.contains(person3));
+    }
+
+
+    @Test
+    public void testRemove() {
+        // Add person to testObject
+        testObject.persist(person);
+
+        // Call the remove method on testObject with the id of person
+        Optional<Person> removedPerson = testObject.remove(person.getId());
+
+        // Assert that a Person was removed
+        assertTrue(removedPerson.isPresent());
+        assertEquals(person, removedPerson.get());
+
+        // Retrieve all Persons from the testObject
+        Collection<Person> allPersons = testObject.find();
+
+        // Assert that the testObject no longer contains the person
+        assertFalse(allPersons.contains(person));
+    }
+
+    @Test
+    public void testRemoveNonExistingItem() {
+        // Call the remove method on testObject with a non-existing id
+        Optional<Person> removedPerson= testObject.remove(2);
+        // Assert that the returned Optional is empty
+        assertFalse(removedPerson.isPresent());
     }
 }
