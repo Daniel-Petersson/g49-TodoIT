@@ -1,4 +1,5 @@
 package se.lexicon.data;
+import se.lexicon.model.AppUser;
 import se.lexicon.model.Person;
 
 import java.util.Collection;
@@ -9,5 +10,5 @@ public interface IPersonDAO {
     Optional<Person> find(int id);//int or Person for input?
     Optional<Person> find(String email);
     Collection<Person> find();
-    void remove(int id);
+    Optional<Person> remove(int id);
 }

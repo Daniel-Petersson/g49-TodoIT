@@ -2,12 +2,10 @@ package se.lexicon.data.impl;
 
 import se.lexicon.data.IPersonDAO;
 import se.lexicon.data.sequencers.PersonIdSequencer;
+import se.lexicon.exception.EntityAlreadyExistsException;
 import se.lexicon.model.Person;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * This class implements the IPersonDAO interface and provides concrete implementations for each of the operations that can be performed on Person objects.
@@ -17,7 +15,7 @@ public class PersonDAOCollection implements IPersonDAO {
     /**
      * A list of Person objects. This list is used to store all the Person instances managed by this DAO.
      */
-    private final List<Person> persons = new ArrayList<>();
+    private final Map<Integer,Person> persons = new HashMap<>();
 
     /**
      * Method to persist a Person object.
@@ -31,10 +29,11 @@ public class PersonDAOCollection implements IPersonDAO {
             throw new IllegalArgumentException("Person cannot be null");
         }
         Optional<Person> personOptional = find(person.getId());
-        if (personOptional.isPresent()) throw new IllegalArgumentException("Person already exist");
+        if (personOptional.isPresent()) throw new EntityAlreadyExistsException("Person already exist");
 
         int id = PersonIdSequencer.nextId();
-        persons.add(person);
+        person.setId(id);
+        persons.put(id,person);
         return person;
     }
 
@@ -45,12 +44,7 @@ public class PersonDAOCollection implements IPersonDAO {
      */
     @Override
     public Optional<Person> find(int id) {
-        for (Person personId : persons) {
-            if (personId.getId() == id) {
-                return Optional.of(personId);
-            }
-        }
-        return Optional.empty();
+        return Optional.ofNullable(persons.get(id));
     }
 
     /**
@@ -66,7 +60,7 @@ public class PersonDAOCollection implements IPersonDAO {
             throw new IllegalArgumentException("Invalid email format");
         }
 
-        for (Person existingEmail : persons) {
+        for (Person existingEmail : persons.values()) {
             if (existingEmail.getEmail().equalsIgnoreCase(email)) {
                 return Optional.of(existingEmail);
             }
@@ -80,7 +74,7 @@ public class PersonDAOCollection implements IPersonDAO {
      */
     @Override
     public Collection<Person> find() {
-        return new ArrayList<>(persons);
+        return new ArrayList<>(persons.values());
     }
 
     /**
@@ -89,11 +83,7 @@ public class PersonDAOCollection implements IPersonDAO {
      * @throws IllegalArgumentException If the Person is not found.
      */
     @Override
-    public void remove(int id) {
-        Optional<Person> personOptional = find(id);
-        if (!personOptional.isPresent()) {
-            throw new IllegalArgumentException("Person id not found");
-        }
-        persons.remove(personOptional.get());
+    public Optional<Person> remove(int id) {
+       return Optional.ofNullable(persons.remove(id));
     }
 }

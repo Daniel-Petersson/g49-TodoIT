@@ -1,6 +1,12 @@
 package se.lexicon;
 
+import se.lexicon.data.impl.TodoItemDAOCollection;
 import se.lexicon.model.*;
+
+import javax.swing.plaf.IconUIResource;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Hello world!
@@ -9,7 +15,8 @@ import se.lexicon.model.*;
 public class App 
 {
     public static void main( String[] args )
-    {   //Test Person
+    {
+        //Test Person
         Person person1 = new Person();
         person1.setFirstName("Daniel");
         person1.setLastName("Petersson");
@@ -22,7 +29,8 @@ public class App
         Person person2 = new Person();
         person2.setFirstName("Kalle");
         person2.setLastName("Klasson");
-        System.out.println(person1.equals(person2));//false
+        System.out.println(person2.toString());//false
+        System.out.println(person2.hashCode());
         //Test TodoItem
         TodoItem item1 = new TodoItem();
         TodoItem item2 = new TodoItem();
@@ -50,6 +58,7 @@ public class App
 
 
 
+
         //Test AppUser
         AppUser appUser = new AppUser("Leiden", "test123", AppRole.ROLE_APP_USER);
         AppUser appUser1 = new AppUser("Leiden", "test123", AppRole.ROLE_APP_USER);
@@ -57,6 +66,10 @@ public class App
         System.out.println(appUser.hashCode());
         System.out.println(appUser.equals(appUser1));//true
 
+        TodoItemDAOCollection collection = new TodoItemDAOCollection();
+        collection.persist(item1);
+        collection.persist(item2);
+        System.out.println(collection.findAll());
 
     }
 }

@@ -11,5 +11,5 @@ public interface ITodoItemTaskDAO {
     Collection<TodoItemTask> find();
     Collection<TodoItemTask> find(boolean status);
     Collection<TodoItemTask> findByPersonId(int id);
-    void remove(int id);
+    Optional<TodoItemTask> remove(int id);
 }

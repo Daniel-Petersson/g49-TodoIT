@@ -39,6 +39,8 @@ public class AppUser {
         this.role = role;
     }
 
+
+
     //Getters
 
     public String getUsername() {

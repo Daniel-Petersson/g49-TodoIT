@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TodoItemDAOImplTest {
+public class TodoItemDAOCollectionTest {
     private TodoItemDAOCollection todoDAO;
     private TodoItem doneTodoItem;
     private TodoItem undoneTodoItem;

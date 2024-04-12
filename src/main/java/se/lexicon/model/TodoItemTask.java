@@ -31,6 +31,10 @@ public class TodoItemTask {
         this.assignee = assignee;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     //Getters
 
     public int getId() {

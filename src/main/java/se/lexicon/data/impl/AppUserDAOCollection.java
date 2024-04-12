@@ -1,18 +1,17 @@
 package se.lexicon.data.impl;
 
 import se.lexicon.data.IAppUserDAO;
+import se.lexicon.data.sequencers.AppUserSequencer;
+import se.lexicon.exception.EntityAlreadyExistsException;
 import se.lexicon.model.AppUser;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * This class implements the IAppUserDAO interface and provides concrete implementations for each of the operations that can be performed on AppUser objects.
  */
 public class AppUserDAOCollection implements IAppUserDAO {
-    private final List<AppUser> users = new ArrayList<>();
+    private final Map<Integer,AppUser> users = new HashMap<>();
 
     /**
      * Method to persist an AppUser object.
@@ -27,9 +26,10 @@ public class AppUserDAOCollection implements IAppUserDAO {
         }
         Optional<AppUser> optionalAppUser = find(appUser.getUsername());
         if (optionalAppUser.isPresent()) {
-            throw new IllegalArgumentException("User already exist");
+            throw new EntityAlreadyExistsException("User already exist");
         }
-        users.add(appUser);
+        int id = AppUserSequencer.nextId();
+        users.put(id,appUser);
         return appUser;
     }
 
@@ -40,8 +40,8 @@ public class AppUserDAOCollection implements IAppUserDAO {
      */
     @Override
     public Optional<AppUser> find(String username) {
-        for (AppUser user : users) {
-            if (user.getUsername().equalsIgnoreCase(username)) {
+        for (AppUser user:users.values()){
+            if (user.getUsername().equalsIgnoreCase(username)){
                 return Optional.of(user);
             }
         }
@@ -54,7 +54,7 @@ public class AppUserDAOCollection implements IAppUserDAO {
      */
     @Override
     public Collection<AppUser> find() {
-        return new ArrayList<>(users); //In general, if you want to prevent external code from modifying your class's internal state, it's a good practice to return a new copy of the collection.
+        return new ArrayList<>(users.values()); //In general, if you want to prevent external code from modifying your class's internal state, it's a good practice to return a new copy of the collection.
     }
 
     /**
@@ -63,11 +63,13 @@ public class AppUserDAOCollection implements IAppUserDAO {
      * @throws IllegalArgumentException If the AppUser is not found.
      */
     @Override
-    public void remove(String username) {
-        Optional<AppUser> optionalAppUser = find(username);
-        if (!optionalAppUser.isPresent()) {
-            throw new IllegalArgumentException("User not found");
+    public Optional<AppUser> remove(String username) {
+        Optional<AppUser> userOptional = find(username);
+        if (userOptional.isPresent()){
+            AppUser user = userOptional.get();
+            users.entrySet().removeIf(entry ->entry.getValue().equals(user));
+
         }
-        users.remove(optionalAppUser.get());
+        return userOptional;
     }
 }

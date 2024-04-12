@@ -2,11 +2,10 @@ package se.lexicon.data.impl;
 
 import se.lexicon.data.ITodoItemTaskDAO;
 import se.lexicon.data.sequencers.TodoItemTaskIdSequencer;
+import se.lexicon.exception.EntityAlreadyExistsException;
 import se.lexicon.model.TodoItemTask;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 /**
  * This class implements the ITodoItemTaskDAO interface and provides concrete implementations for each of the operations that can be performed on TodoItemTask objects.
@@ -16,7 +15,7 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
     /**
      * A list of TodoItemTask objects. This list is used to store all the TodoItemTask instances managed by this DAO.
      */
-    private final List<TodoItemTask> itemTasks = new ArrayList<>();
+    private final Map<Integer,TodoItemTask> itemTasks = new HashMap<>();
 
     /**
      * Method to persist a TodoItemTask object.
@@ -28,9 +27,10 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
     public TodoItemTask persist(TodoItemTask todoItemTask) {
         if (todoItemTask == null) throw new IllegalArgumentException("Todo Item Task cannot be null");
         Optional<TodoItemTask> taskOptional = find(todoItemTask.getId());
-        if (taskOptional.isPresent()) throw new IllegalArgumentException("Task already exist");
+        if (taskOptional.isPresent()) throw new EntityAlreadyExistsException("Task already exist");
         int id = TodoItemTaskIdSequencer.nextId();
-        itemTasks.add(todoItemTask);
+        todoItemTask.setId(id);
+        itemTasks.put(id,todoItemTask);
         return todoItemTask;
     }
 
@@ -41,12 +41,7 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
      */
     @Override
     public Optional<TodoItemTask> find(int id) {
-        for (TodoItemTask existingId : itemTasks) {
-            if (existingId.getId() == id) {
-                return Optional.of(existingId);
-            }
-        }
-        return Optional.empty();
+        return Optional.ofNullable(itemTasks.get(id));
     }
 
     /**
@@ -55,7 +50,7 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
      */
     @Override
     public Collection<TodoItemTask> find() {
-        return new ArrayList<>(itemTasks);
+        return new ArrayList<>(itemTasks.values());
     }
 
     /**
@@ -66,7 +61,7 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
     @Override
     public Collection<TodoItemTask> find(boolean status) {
         List<TodoItemTask> assignedItems = new ArrayList<>();
-        for (TodoItemTask item : itemTasks) {
+        for (TodoItemTask item : itemTasks.values()) {
             if (item.isAssigned() == status) {
                 assignedItems.add(item);
             }
@@ -82,7 +77,7 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
     @Override
     public Collection<TodoItemTask> findByPersonId(int id) {
         List<TodoItemTask> itemByAssigneeId = new ArrayList<>();
-        for (TodoItemTask assignedId : itemTasks) {
+        for (TodoItemTask assignedId : itemTasks.values()) {
             if (assignedId.getAssignee().getId() == id) {
                 itemByAssigneeId.add(assignedId);
             }
@@ -96,11 +91,7 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
      * @throws IllegalArgumentException If the TodoItemTask is not found.
      */
     @Override
-    public void remove(int id) {
-        Optional<TodoItemTask> taskOptional = find(id);
-        if (!taskOptional.isPresent()) {
-            throw new IllegalArgumentException("Task not found");
-        }
-        itemTasks.remove(taskOptional.get());
+    public Optional<TodoItemTask> remove(int id) {
+       return Optional.ofNullable(itemTasks.remove(id));
     }
 }

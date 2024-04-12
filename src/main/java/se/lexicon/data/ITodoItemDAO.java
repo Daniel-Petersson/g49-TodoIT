@@ -16,6 +16,6 @@ public interface ITodoItemDAO {
     Collection<TodoItem> findByPersonId(int personId);
     Collection<TodoItem> find(LocalDate date, boolean isBefore);
     List<TodoItem> findAll();
-    void remove(int id);
+    Optional<TodoItem> remove(int id);
 
 }
