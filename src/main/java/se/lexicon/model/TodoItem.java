@@ -23,6 +23,14 @@ public class TodoItem {
         this.title = title;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDeadLine(LocalDate deadLine) {
+        this.deadLine = deadLine;
+    }
+
     public void setTaskDescription(String description) {
         this.taskDescription = description;
     }

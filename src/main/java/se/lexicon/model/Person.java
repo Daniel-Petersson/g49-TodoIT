@@ -14,6 +14,7 @@ public class Person {
 
     //Setters
 
+
     public void setFirstName(String firstName) {
         if (firstName == null || firstName.trim().isEmpty()) {
             throw new IllegalArgumentException("Firstname cannot be null or empty");
@@ -33,6 +34,10 @@ public class Person {
             throw new IllegalArgumentException("Email cannot be null or empty");
         }
         this.email = email;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setCredentials(AppUser credentials) {

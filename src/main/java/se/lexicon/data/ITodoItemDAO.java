@@ -5,6 +5,7 @@ import se.lexicon.model.TodoItem;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface ITodoItemDAO {
@@ -14,6 +15,7 @@ public interface ITodoItemDAO {
     Collection<TodoItem> find(String title);
     Collection<TodoItem> findByPersonId(int personId);
     Collection<TodoItem> find(LocalDate date, boolean isBefore);
+    List<TodoItem> findAll();
     void remove(int id);
 
 }
