@@ -11,10 +11,11 @@ import java.util.*;
  * This class implements the IAppUserDAO interface and provides concrete implementations for each of the operations that can be performed on AppUser objects.
  */
 public class AppUserDAOCollection implements IAppUserDAO {
-    private final Map<Integer,AppUser> users = new HashMap<>();
+    private final Map<Integer, AppUser> users = new HashMap<>();
 
     /**
      * Method to persist an AppUser object.
+     *
      * @param appUser The AppUser object to be persisted.
      * @return The persisted AppUser object.
      * @throws IllegalArgumentException If the input AppUser is null or already exists in the list.
@@ -29,19 +30,20 @@ public class AppUserDAOCollection implements IAppUserDAO {
             throw new EntityAlreadyExistsException("User already exist");
         }
         int id = AppUserSequencer.nextId();
-        users.put(id,appUser);
+        users.put(id, appUser);
         return appUser;
     }
 
     /**
      * Method to find an AppUser by username.
+     *
      * @param username The username of the AppUser to be found.
      * @return An Optional containing the found AppUser, or an empty Optional if no AppUser was found.
      */
     @Override
     public Optional<AppUser> find(String username) {
-        for (AppUser user:users.values()){
-            if (user.getUsername().equalsIgnoreCase(username)){
+        for (AppUser user : users.values()) {
+            if (user.getUsername().equalsIgnoreCase(username)) {
                 return Optional.of(user);
             }
         }
@@ -50,6 +52,7 @@ public class AppUserDAOCollection implements IAppUserDAO {
 
     /**
      * Method to find all AppUser objects.
+     *
      * @return A Collection containing all AppUser objects.
      */
     @Override
@@ -59,15 +62,16 @@ public class AppUserDAOCollection implements IAppUserDAO {
 
     /**
      * Method to remove an AppUser by username.
+     *
      * @param username The username of the AppUser to be removed.
      * @throws IllegalArgumentException If the AppUser is not found.
      */
     @Override
     public Optional<AppUser> remove(String username) {
         Optional<AppUser> userOptional = find(username);
-        if (userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             AppUser user = userOptional.get();
-            users.entrySet().removeIf(entry ->entry.getValue().equals(user));
+            users.entrySet().removeIf(entry -> entry.getValue().equals(user));
 
         }
         return userOptional;

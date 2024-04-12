@@ -7,8 +7,11 @@ import java.util.Optional;
 
 public interface IAppUserDAO {
     AppUser persist(AppUser appUser);
+
     Optional<AppUser> find(String username);
+
     Collection<AppUser> find();
+
     Optional<AppUser> remove(String username);
 
 }

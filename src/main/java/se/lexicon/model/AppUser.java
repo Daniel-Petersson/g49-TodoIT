@@ -40,7 +40,6 @@ public class AppUser {
     }
 
 
-
     //Getters
 
     public String getUsername() {
@@ -56,11 +55,10 @@ public class AppUser {
     }
 
 
-
     //Methods
     @Override
-    public String toString(){
-        return "AppUser { "+ "Username: " + getUsername() +", AppRole: "+ getRole()+" }";
+    public String toString() {
+        return "AppUser { " + "Username: " + getUsername() + ", AppRole: " + getRole() + " }";
     }
 
     @Override
@@ -70,8 +68,8 @@ public class AppUser {
 
     @Override
     public boolean equals(Object obj) {
-        if (this==obj) return true;
-        if (obj==null || getClass() != obj.getClass()) return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         AppUser appUser = (AppUser) obj;
         return Objects.equals(username, appUser.username) && role == appUser.role;
 

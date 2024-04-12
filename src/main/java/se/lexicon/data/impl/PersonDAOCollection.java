@@ -15,10 +15,11 @@ public class PersonDAOCollection implements IPersonDAO {
     /**
      * A list of Person objects. This list is used to store all the Person instances managed by this DAO.
      */
-    private final Map<Integer,Person> persons = new HashMap<>();
+    private final Map<Integer, Person> persons = new HashMap<>();
 
     /**
      * Method to persist a Person object.
+     *
      * @param person The Person object to be persisted.
      * @return The persisted Person object.
      * @throws IllegalArgumentException If the input Person is null or already exists in the list.
@@ -33,12 +34,13 @@ public class PersonDAOCollection implements IPersonDAO {
 
         int id = PersonIdSequencer.nextId();
         person.setId(id);
-        persons.put(id,person);
+        persons.put(id, person);
         return person;
     }
 
     /**
      * Method to find a Person by id.
+     *
      * @param id The id of the Person to be found.
      * @return An Optional containing the found Person, or an empty Optional if no Person was found.
      */
@@ -49,6 +51,7 @@ public class PersonDAOCollection implements IPersonDAO {
 
     /**
      * Method to find a Person by their email.
+     *
      * @param email The email to search for.
      * @return An Optional containing the found Person, or null if no Person was found.
      * @throws IllegalArgumentException If the email is null or does not match the required format.
@@ -70,6 +73,7 @@ public class PersonDAOCollection implements IPersonDAO {
 
     /**
      * Method to find all Person objects.
+     *
      * @return A Collection containing all Person objects.
      */
     @Override
@@ -79,11 +83,12 @@ public class PersonDAOCollection implements IPersonDAO {
 
     /**
      * Method to remove a Person by id.
+     *
      * @param id The id of the Person to be removed.
      * @throws IllegalArgumentException If the Person is not found.
      */
     @Override
     public Optional<Person> remove(int id) {
-       return Optional.ofNullable(persons.remove(id));
+        return Optional.ofNullable(persons.remove(id));
     }
 }
