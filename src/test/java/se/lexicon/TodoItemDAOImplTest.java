@@ -124,17 +124,21 @@ public class TodoItemDAOImplTest {
         todoDAO.persist(doneTodoItem);
         todoDAO.persist(undoneTodoItem);
         // Call the remove method on todoDAO with the id of doneTodoItem
-        todoDAO.remove(doneTodoItem.getId());
+        Optional<TodoItem> removedItem = todoDAO.remove(doneTodoItem.getId());        // Retrieve all TodoItems from the todoDAO
+        // Assert that a TodoItem was removed
+        assertTrue(removedItem.isPresent());
+        assertEquals(doneTodoItem,removedItem.get());
         // Retrieve all TodoItems from the todoDAO
         List<TodoItem> allTodoItems = todoDAO.findAll();
-
         // Assert that the todoDAO no longer contains doneTodoItem
         assertFalse(allTodoItems.contains(doneTodoItem));
     }
 
     @Test
     public void testRemoveNonExistingItem() {
-        // Assert that the todoDAO throws IllegalExpression when calling remoce method on a non existing item
-        assertThrows(IllegalArgumentException.class, () -> todoDAO.remove(3));
+        // Call the remove method on todoDAO with a non-existing id
+        Optional<TodoItem> removedItem = todoDAO.remove(3);
+        // Assert that the returned Optional is empty
+        assertFalse(removedItem.isPresent());
     }
 }
