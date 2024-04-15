@@ -22,13 +22,11 @@ public class AppUserDAOCollection implements IAppUserDAO {
      */
     @Override
     public AppUser persist(AppUser appUser) {
-        if (appUser == null) {
-            throw new IllegalArgumentException("AppUser cannot be null");
-        }
+        if (appUser == null) throw new IllegalArgumentException("AppUser cannot be null");
         Optional<AppUser> optionalAppUser = find(appUser.getUsername());
-        if (optionalAppUser.isPresent()) {
+        optionalAppUser.ifPresent(user -> {
             throw new EntityAlreadyExistsException("User already exist");
-        }
+        });
         int id = AppUserSequencer.nextId();
         users.put(id, appUser);
         return appUser;
@@ -42,11 +40,8 @@ public class AppUserDAOCollection implements IAppUserDAO {
      */
     @Override
     public Optional<AppUser> find(String username) {
-        for (AppUser user : users.values()) {
-            if (user.getUsername().equalsIgnoreCase(username)) {
-                return Optional.of(user);
-            }
-        }
+        for (AppUser user : users.values())
+            if (user.getUsername().equalsIgnoreCase(username)) return Optional.of(user);
         return Optional.empty();
     }
 
@@ -69,11 +64,11 @@ public class AppUserDAOCollection implements IAppUserDAO {
     @Override
     public Optional<AppUser> remove(String username) {
         Optional<AppUser> userOptional = find(username);
-        if (userOptional.isPresent()) {
-            AppUser user = userOptional.get();
+        userOptional.ifPresent(appUser -> {
+            AppUser user = appUser;
             users.entrySet().removeIf(entry -> entry.getValue().equals(user));
 
-        }
+        });
         return userOptional;
     }
 }
