@@ -1,7 +1,9 @@
 package se.lexicon.data.impl;
 
 import se.lexicon.data.ITodoItemTaskDAO;
-import se.lexicon.data.sequencers.TodoItemTaskIdSequencer;
+import se.lexicon.data.sequencers.IdSequencer;
+import se.lexicon.data.sequencers.decaprecated.TodoItemTaskIdSequencer;
+import se.lexicon.data.util.EntityType;
 import se.lexicon.exception.EntityAlreadyExistsException;
 import se.lexicon.model.TodoItemTask;
 
@@ -23,9 +25,10 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
         if (todoItemTask == null) throw new IllegalArgumentException("Todo Item Task cannot be null");
         Optional<TodoItemTask> taskOptional = find(todoItemTask.getId());
         if (taskOptional.isPresent()) throw new EntityAlreadyExistsException("Task already exist");
-        int id = TodoItemTaskIdSequencer.nextId();
-        todoItemTask.setId(id);
-        itemTasks.put(id, todoItemTask);
+        IdSequencer sequencer = IdSequencer.getInstance();
+        int nextTodoItemTaskId = sequencer.nextId(EntityType.TODO_ITEM_TASK);
+        todoItemTask.setId(nextTodoItemTaskId);
+        itemTasks.put(nextTodoItemTaskId, todoItemTask);
         return todoItemTask;
     }
 
@@ -49,7 +52,7 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
     @Override
     public Collection<TodoItemTask> findByPersonId(int id) {
         return itemTasks.values().stream()
-                .filter(item -> item.getAssignee().getId() == id)
+                .filter(item -> item.getAssignee() != null && item.getAssignee().getId() == id)
                 .collect(Collectors.toList());
     }
 

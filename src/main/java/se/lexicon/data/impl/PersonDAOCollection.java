@@ -1,12 +1,13 @@
 package se.lexicon.data.impl;
 
 import se.lexicon.data.IPersonDAO;
-import se.lexicon.data.sequencers.PersonIdSequencer;
+import se.lexicon.data.sequencers.IdSequencer;
+import se.lexicon.data.sequencers.decaprecated.PersonIdSequencer;
+import se.lexicon.data.util.EntityType;
 import se.lexicon.exception.EntityAlreadyExistsException;
 import se.lexicon.model.Person;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * This class implements the IPersonDAO interface and provides concrete implementations for each of the operations that can be performed on Person objects.
@@ -26,9 +27,10 @@ public class PersonDAOCollection implements IPersonDAO {
         Optional<Person> personOptional = find(person.getId());
         if (personOptional.isPresent()) throw new EntityAlreadyExistsException("Person already exist");
 
-        int id = PersonIdSequencer.nextId();
-        person.setId(id);
-        persons.put(id, person);
+        IdSequencer sequencer = IdSequencer.getInstance();
+        int nextPersonId = sequencer.nextId(EntityType.PERSON);
+        person.setId(nextPersonId);
+        persons.put(nextPersonId, person);
         return person;
     }
 
