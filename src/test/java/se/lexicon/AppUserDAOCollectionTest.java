@@ -1,74 +1,74 @@
 package se.lexicon;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import se.lexicon.data.impl.AppUserDAOCollection;
+import se.lexicon.data.util.AppRole;
+import se.lexicon.model.AppUser;
+import se.lexicon.exception.EntityAlreadyExistsException;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AppUserDAOCollectionTest {
+    private AppUserDAOCollection testObject;
+    private AppUser testUser;
+
     @BeforeEach
     void setUp() {
-        // TODO: Initialize testObject
-        // TODO: Initialize some AppUser instances for testing
-    }
+        testObject = new AppUserDAOCollection();
+        testUser = new AppUser("testUser","test", AppRole.ROLE_APP_USER);
 
-    // Test the persist method
-    @Test
-    public void testPersist() {
-        // Call the persist method on testObject with appUser
-        // Store the returned AppUser in a variable
-
-        // Print out the state of the testObject and the AppUser
-
-        // Retrieve all AppUsers from the testObject
-
-        // Assert that the testObject now contains the appUser
-    }
-
-    // Test the find method
-    @Test
-    public void testFindById() {
-        // Add appUser to testObject
-
-        // Call the find method on testObject with the id of appUser
-
-        // Assert that the returned AppUser is the same as the appUser that was added
     }
 
     @Test
-    public void testFindByUsername() {
-        // Add AppUsers with different usernames to testObject
-
-        // Call find with username
-
-        // Assert that the returned Collection contains the correct AppUser
+    public void persist_ShouldPersistUser_WhenUserDoesNotExist() {
+        AppUser newUser = new AppUser("newUser","test", AppRole.ROLE_APP_USER);
+        AppUser persistedUser = testObject.persist(newUser);
+        assertEquals(newUser, persistedUser);
+        assertTrue(testObject.find(newUser.getUsername()).isPresent());
     }
 
     @Test
-    public void testFindAll() {
-        // Add AppUsers to testObject
-
-        // Call find method without parameters
-
-        // Assert that the returned Collection contains all the AppUsers
+    public void persist_ShouldThrowException_WhenUserAlreadyExists() {
+        AppUser existingUser = new AppUser("existingUser","test", AppRole.ROLE_APP_USER);
+        testObject.persist(existingUser);
+        assertThrows(EntityAlreadyExistsException.class, () -> testObject.persist(existingUser));
     }
 
     @Test
-    public void testRemove() {
-        // Add appUser to testObject
-
-        // Call the remove method on testObject with the id of appUser
-
-        // Assert that an AppUser was removed
-
-        // Retrieve all AppUsers from the testObject
-
-        // Assert that the testObject no longer contains the appUser
+    public void persist_ShouldThrowException_WhenUserIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> testObject.persist(null));
     }
 
     @Test
-    public void testRemoveNonExistingItem() {
-        // Call the remove method on testObject with a non-existing id
+    public void find_ShouldReturnUser_WhenUserExists() {
+        AppUser existingUser = new AppUser("existingUser","test", AppRole.ROLE_APP_USER);
+        testObject.persist(existingUser);
+        Optional<AppUser> foundUser = testObject.find(existingUser.getUsername());
+        assertTrue(foundUser.isPresent());
+        assertEquals(existingUser, foundUser.get());
+    }
 
-        // Assert that the returned Optional is empty
+    @Test
+    public void find_ShouldReturnEmptyOptional_WhenUserDoesNotExist() {
+        Optional<AppUser> foundUser = testObject.find("nonExistingUser");
+        assertFalse(foundUser.isPresent());
+    }
+
+    @Test
+    public void remove_ShouldRemoveUser_WhenUserExists() {
+        AppUser existingUser = new AppUser("existingUser","test", AppRole.ROLE_APP_USER);
+        testObject.persist(existingUser);
+        Optional<AppUser> removedUser = testObject.remove(existingUser.getUsername());
+        assertTrue(removedUser.isPresent());
+        assertEquals(existingUser, removedUser.get());
+        assertFalse(testObject.find(existingUser.getUsername()).isPresent());
+    }
+
+    @Test
+    public void remove_ShouldReturnEmptyOptional_WhenUserDoesNotExist() {
+        Optional<AppUser> removedUser = testObject.remove("nonExistingUser");
+        assertFalse(removedUser.isPresent());
     }
 }

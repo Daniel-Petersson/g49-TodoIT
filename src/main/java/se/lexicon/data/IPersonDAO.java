@@ -1,10 +1,11 @@
 package se.lexicon.data;
 
-import se.lexicon.model.AppUser;
+
 import se.lexicon.model.Person;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public interface IPersonDAO {
     Person persist(Person person);
@@ -13,7 +14,7 @@ public interface IPersonDAO {
 
     Optional<Person> find(String email);
 
-    Collection<Person> find();
+    Collection<Person> find(Predicate<Person> filter);
 
     Optional<Person> remove(int id);
 }

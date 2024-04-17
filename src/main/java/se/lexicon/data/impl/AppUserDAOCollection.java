@@ -6,11 +6,8 @@ import se.lexicon.model.AppUser;
 
 import java.util.*;
 
-/**
- * This class implements the IAppUserDAO interface and provides concrete implementations for each of the operations that can be performed on AppUser objects.
- */
 public class AppUserDAOCollection implements IAppUserDAO {
-    private final Map<Integer, AppUser> users = new HashMap<>();
+    private final List<AppUser> users = new ArrayList<>();
 
     @Override
     public AppUser persist(AppUser appUser) {
@@ -19,27 +16,26 @@ public class AppUserDAOCollection implements IAppUserDAO {
         optionalAppUser.ifPresent(user -> {
             throw new EntityAlreadyExistsException("User already exist");
         });
+        users.add(appUser);
         return appUser;
     }
 
     @Override
     public Optional<AppUser> find(String username) {
-        return users.values().stream()
+        return users.stream()
                 .filter(user -> user.getUsername().equalsIgnoreCase(username))
                 .findFirst();
     }
 
     @Override
     public Collection<AppUser> find() {
-        return users.values();
+        return users;
     }
 
     @Override
     public Optional<AppUser> remove(String username) {
         Optional<AppUser> userOptional = find(username);
-        userOptional.ifPresent(appUser -> {
-            users.values().removeIf(user -> user.getUsername().equalsIgnoreCase(username));
-        });
+        userOptional.ifPresent(appUser -> users.removeIf(user -> user.getUsername().equalsIgnoreCase(username)));
         return userOptional;
     }
 }

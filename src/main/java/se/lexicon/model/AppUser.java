@@ -1,5 +1,7 @@
 package se.lexicon.model;
 
+import se.lexicon.data.util.AppRole;
+
 import java.util.Objects;
 
 public class AppUser {

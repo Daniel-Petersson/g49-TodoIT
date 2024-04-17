@@ -2,12 +2,14 @@ package se.lexicon.data.impl;
 
 import se.lexicon.data.ITodoItemTaskDAO;
 import se.lexicon.data.sequencers.IdSequencer;
-import se.lexicon.data.sequencers.decaprecated.TodoItemTaskIdSequencer;
+
 import se.lexicon.data.util.EntityType;
 import se.lexicon.exception.EntityAlreadyExistsException;
+
 import se.lexicon.model.TodoItemTask;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -33,8 +35,8 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
     }
 
     @Override
-    public Optional<TodoItemTask> find(int id) {
-        return Optional.ofNullable(itemTasks.get(id));
+    public Optional<TodoItemTask> find(int taskId) {
+        return Optional.ofNullable(itemTasks.get(taskId));
     }
 
     @Override
@@ -43,18 +45,12 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
     }
 
     @Override
-    public Collection<TodoItemTask> find(boolean status) {
+    public Collection<TodoItemTask> find(Predicate<TodoItemTask> filter) {
         return itemTasks.values().stream()
-                .filter(item -> item.isAssigned() == status)
-                .collect(Collectors.toList());
+                .filter(filter).collect(Collectors.toList());
     }
 
-    @Override
-    public Collection<TodoItemTask> findByPersonId(int id) {
-        return itemTasks.values().stream()
-                .filter(item -> item.getAssignee() != null && item.getAssignee().getId() == id)
-                .collect(Collectors.toList());
-    }
+
 
     @Override
     public Optional<TodoItemTask> remove(int id) {

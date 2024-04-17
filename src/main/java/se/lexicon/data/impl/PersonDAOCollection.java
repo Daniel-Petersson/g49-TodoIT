@@ -2,12 +2,12 @@ package se.lexicon.data.impl;
 
 import se.lexicon.data.IPersonDAO;
 import se.lexicon.data.sequencers.IdSequencer;
-import se.lexicon.data.sequencers.decaprecated.PersonIdSequencer;
 import se.lexicon.data.util.EntityType;
 import se.lexicon.exception.EntityAlreadyExistsException;
 import se.lexicon.model.Person;
-
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * This class implements the IPersonDAO interface and provides concrete implementations for each of the operations that can be performed on Person objects.
@@ -52,8 +52,9 @@ public class PersonDAOCollection implements IPersonDAO {
     }
 
     @Override
-    public Collection<Person> find() {
-        return persons.values();
+    public Collection<Person> find(Predicate<Person> filter) {
+        return persons.values().stream()
+                .filter(filter).collect(Collectors.toList());
     }
 
     @Override
