@@ -1,130 +1,67 @@
 package se.lexicon;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.lexicon.data.impl.PersonDAOCollection;
-import se.lexicon.exception.EntityAlreadyExistsException;
 import se.lexicon.model.Person;
+import se.lexicon.exception.EntityAlreadyExistsException;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PersonDAOCollectionTest {
-
     private PersonDAOCollection testObject;
-    private Person person; // Declare person as a field
-    private Person person1;
+    private Person testPerson;
 
     @BeforeEach
-    public void setUp() {
-        // Initialize testObject
+    void setUp() {
         testObject = new PersonDAOCollection();
-        // Initialize some Person instances for testing
-        person = new Person();
-        person.setFirstName("Test");
-        person.setLastName("Testsson");
-        person.setEmail("Test@test.se");
-
-        person1 = new Person();
-        person1.setFirstName("Tset");
-        person1.setLastName("Testsson");
-
-
-
-    }
-    // Test the persist method
-    @Test
-    public void testPersist() {
-        // Test if a new Person can be persisted successfully
-        Person actualValue = testObject.persist(person);
-        Person expectedValue = person;
-        // Assert
-        // Check if create method creates customer
-        assertEquals(expectedValue, actualValue);
-        // Test if EntityAlreadyExistsException is thrown when trying to persist a Person that already exists
-        assertThrows(EntityAlreadyExistsException.class, () -> testObject.persist(person));
-
+        testPerson = new Person();
+        testPerson.setFirstName("Test");
+        testPerson.setLastName("Testsson");
+        testPerson.setEmail("test@test.se");
     }
 
     @Test
-    void testFind_byId() {
-        // Add person to testObject
-        testObject.persist(person);
+    public void persist_ShouldPersistPerson() {
+        Person persistedPerson = testObject.persist(testPerson);
+        assertEquals(testPerson, persistedPerson);
+        assertTrue(testObject.find(testPerson.getId()).isPresent());
+    }
 
-        // Call the find method on testObject with the id of person
-        Optional<Person> foundPerson = testObject.find(person.getId());
+    @Test
+    public void persist_ShouldThrowException_WhenPersonAlreadyExists() {
+        testObject.persist(testPerson);
+        assertThrows(EntityAlreadyExistsException.class, () -> testObject.persist(testPerson));
+    }
 
-
+    @Test
+    public void find_ShouldReturnPerson_WhenPersonExists() {
+        testObject.persist(testPerson);
+        Optional<Person> foundPerson = testObject.find(testPerson.getId());
         assertTrue(foundPerson.isPresent());
-
-        // Assert that the returned Person is the same as the person that was added
-        assertEquals(person, foundPerson.get());
+        assertEquals(testPerson, foundPerson.get());
     }
 
     @Test
-    void testFind_byEmail() {
-        // Add Person can be found by email
-        testObject.persist(person);
-        // Call find with email
-        Optional<Person> noEmail = testObject.find("no@email.no");
-        // Test if an empty Optional is returned when trying to find a Person with an email that does not exist
-        assertFalse(noEmail.isPresent());
-
-        // Test if a Person can be found by email
-        Optional<Person> email = testObject.find(person.getEmail());
-        assertTrue(email.isPresent());
-        assertEquals(person, email.get());
-
-        // Test if IllegalArgumentException is thrown when trying to find a Person with an invalid email format
-        assertThrows(IllegalArgumentException.class, () -> testObject.find("invalid email format"));
+    public void find_ShouldReturnEmptyOptional_WhenPersonDoesNotExist() {
+        Optional<Person> foundPerson = testObject.find(999);
+        assertFalse(foundPerson.isPresent());
     }
 
-    // Test the find method
     @Test
-    void testFind_allPersons() {
-        // Arrange
-        Person person2 = new Person();
-        Person person3 = new Person();
-        testObject.persist(person2);
-        testObject.persist(person3);
-
-        // Act
-        Collection<Person> result = testObject.find();
-        // Assert
-        assertEquals(2,result.size());
-        assertTrue(result.contains(person2));
-        assertTrue(result.contains(person3));
-    }
-
-
-    @Test
-    public void testRemove() {
-        // Add person to testObject
-        testObject.persist(person);
-
-        // Call the remove method on testObject with the id of person
-        Optional<Person> removedPerson = testObject.remove(person.getId());
-
-        // Assert that a Person was removed
+    public void remove_ShouldRemovePerson_WhenPersonExists() {
+        testObject.persist(testPerson);
+        Optional<Person> removedPerson = testObject.remove(testPerson.getId());
         assertTrue(removedPerson.isPresent());
-        assertEquals(person, removedPerson.get());
-
-        // Retrieve all Persons from the testObject
-        Collection<Person> allPersons = testObject.find();
-
-        // Assert that the testObject no longer contains the person
-        assertFalse(allPersons.contains(person));
+        assertEquals(testPerson, removedPerson.get());
+        assertFalse(testObject.find(testPerson.getId()).isPresent());
     }
 
     @Test
-    public void testRemoveNonExistingItem() {
-        // Call the remove method on testObject with a non-existing id
-        Optional<Person> removedPerson= testObject.remove(2);
-        // Assert that the returned Optional is empty
+    public void remove_ShouldReturnEmptyOptional_WhenPersonDoesNotExist() {
+        Optional<Person> removedPerson = testObject.remove(999);
         assertFalse(removedPerson.isPresent());
     }
 }

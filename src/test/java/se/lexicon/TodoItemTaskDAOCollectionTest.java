@@ -1,83 +1,67 @@
-package se.lexicon;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import se.lexicon.data.impl.TodoItemTaskDAOCollection;
+import se.lexicon.model.TodoItemTask;
+import se.lexicon.exception.EntityAlreadyExistsException;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TodoItemTaskDAOCollectionTest {
-    // TODO: Declare a TodoItemTaskDAOCollection instance
+    private TodoItemTaskDAOCollection testObject;
+    private TodoItemTask testTodoItemTask;
 
     @BeforeEach
     public void setup() {
-        // TODO: Initialize the TodoItemTaskDAOCollection instance
-    }
-
-    // Test the persist method
-    @Test
-    public void testPersist() {
-        // Call the persist method on testObject with todoItemTask
-        // Store the returned TodoItemTask in a variable
-
-        // Print out the state of the testObject and the TodoItemTask
-
-        // Retrieve all TodoItemTasks from the testObject
-
-        // Assert that the testObject now contains the todoItemTask
-    }
-
-    // Test the find method
-    @Test
-    public void testFindById() {
-        // Add todoItemTask to testObject
-
-        // Call the find method on testObject with the id of todoItemTask
-
-        // Assert that the returned TodoItemTask is the same as the todoItemTask that was added
+        testObject = new TodoItemTaskDAOCollection();
+        testTodoItemTask = new TodoItemTask();
     }
 
     @Test
-    public void testFindByAssignedStatus() {
-        // Add TodoItemTasks with different assigned statuses to testObject
-
-        // Call find with assigned status
-
-        // Assert that the returned Collection contains the correct TodoItemTask
+    public void persist_ShouldPersistTodoItemTask_WhenTodoItemTaskDoesNotExist() {
+        TodoItemTask persistedTodoItemTask = testObject.persist(testTodoItemTask);
+        assertEquals(testTodoItemTask, persistedTodoItemTask);
+        assertTrue(testObject.find(testTodoItemTask.getId()).isPresent());
     }
 
     @Test
-    public void testFindAll() {
-        // Add TodoItemTasks to testObject
-
-        // Call find method without parameters
-
-        // Assert that the returned Collection contains all the TodoItemTasks
+    public void persist_ShouldThrowException_WhenTodoItemTaskAlreadyExists() {
+        testObject.persist(testTodoItemTask);
+        assertThrows(EntityAlreadyExistsException.class, () -> testObject.persist(testTodoItemTask));
     }
 
     @Test
-    public void testFindByPersonId() {
-        // Add TodoItemTasks assigned to different persons to testObject
-
-        // Call findByPersonId with personId
-
-        // Assert that the returned Collection contains the correct TodoItemTask
+    public void persist_ShouldThrowException_WhenTodoItemTaskIsNull() {
+        assertThrows(IllegalArgumentException.class, () -> testObject.persist(null));
     }
 
     @Test
-    public void testRemove() {
-        // Add todoItemTask to testObject
-
-        // Call the remove method on testObject with the id of todoItemTask
-
-        // Assert that a TodoItemTask was removed
-
-        // Retrieve all TodoItemTasks from the testObject
-
-        // Assert that the testObject no longer contains the todoItemTask
+    public void find_ShouldReturnTodoItemTask_WhenTodoItemTaskExists() {
+        testObject.persist(testTodoItemTask);
+        Optional<TodoItemTask> foundTodoItemTask = testObject.find(testTodoItemTask.getId());
+        assertTrue(foundTodoItemTask.isPresent());
+        assertEquals(testTodoItemTask, foundTodoItemTask.get());
     }
 
     @Test
-    public void testRemoveNonExistingItem() {
-        // Call the remove method on testObject with a non-existing id
+    public void find_ShouldReturnEmptyOptional_WhenTodoItemTaskDoesNotExist() {
+        Optional<TodoItemTask> foundTodoItemTask = testObject.find(999);
+        assertFalse(foundTodoItemTask.isPresent());
+    }
 
-        // Assert that the returned Optional is empty
+    @Test
+    public void remove_ShouldRemoveTodoItemTask_WhenTodoItemTaskExists() {
+        testObject.persist(testTodoItemTask);
+        Optional<TodoItemTask> removedTodoItemTask = testObject.remove(testTodoItemTask.getId());
+        assertTrue(removedTodoItemTask.isPresent());
+        assertEquals(testTodoItemTask, removedTodoItemTask.get());
+        assertFalse(testObject.find(testTodoItemTask.getId()).isPresent());
+    }
+
+    @Test
+    public void remove_ShouldReturnEmptyOptional_WhenTodoItemTaskDoesNotExist() {
+        Optional<TodoItemTask> removedTodoItemTask = testObject.remove(999);
+        assertFalse(removedTodoItemTask.isPresent());
     }
 }
