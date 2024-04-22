@@ -1,4 +1,4 @@
-package se.lexicon.Model;
+package se.lexicon.model;
 
 import java.util.Objects;
 
@@ -31,7 +31,13 @@ public class TodoItemTask {
         this.assignee = assignee;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     //Getters
+    
+
 
     public int getId() {
         return id;
@@ -39,6 +45,10 @@ public class TodoItemTask {
 
     public TodoItem getTodoItem() {
         return todoItem;
+    }
+
+    public boolean isAssigned() {
+        return assigned;
     }
 
     public Person getAssignee() {

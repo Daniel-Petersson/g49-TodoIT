@@ -1,4 +1,6 @@
-package se.lexicon.Model;
+package se.lexicon.model;
+
+import se.lexicon.data.util.AppRole;
 
 import java.util.Objects;
 
@@ -39,6 +41,7 @@ public class AppUser {
         this.role = role;
     }
 
+
     //Getters
 
     public String getUsername() {
@@ -54,11 +57,10 @@ public class AppUser {
     }
 
 
-
     //Methods
     @Override
-    public String toString(){
-        return "AppUser { "+ "Username: " + getUsername() +", AppRole: "+ getRole()+" }";
+    public String toString() {
+        return "AppUser { " + "Username: " + getUsername() + ", AppRole: " + getRole() + " }";
     }
 
     @Override
@@ -68,8 +70,8 @@ public class AppUser {
 
     @Override
     public boolean equals(Object obj) {
-        if (this==obj) return true;
-        if (obj==null || getClass() != obj.getClass()) return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         AppUser appUser = (AppUser) obj;
         return Objects.equals(username, appUser.username) && role == appUser.role;
 

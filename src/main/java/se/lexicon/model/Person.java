@@ -1,6 +1,5 @@
-package se.lexicon.Model;
+package se.lexicon.model;
 
-import java.security.PublicKey;
 import java.util.Objects;
 
 public class Person {
@@ -14,6 +13,7 @@ public class Person {
     //Constructors
 
     //Setters
+
 
     public void setFirstName(String firstName) {
         if (firstName == null || firstName.trim().isEmpty()) {
@@ -34,6 +34,10 @@ public class Person {
             throw new IllegalArgumentException("Email cannot be null or empty");
         }
         this.email = email;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setCredentials(AppUser credentials) {

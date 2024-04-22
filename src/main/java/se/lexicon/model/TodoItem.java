@@ -1,4 +1,4 @@
-package se.lexicon.Model;
+package se.lexicon.model;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -21,6 +21,14 @@ public class TodoItem {
             throw new IllegalArgumentException("Title cannot be null or empty");
         }
         this.title = title;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDeadLine(LocalDate deadLine) {
+        this.deadLine = deadLine;
     }
 
     public void setTaskDescription(String description) {

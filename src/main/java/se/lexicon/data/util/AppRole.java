@@ -1,4 +1,4 @@
-package se.lexicon.Model;
+package se.lexicon.data.util;
 
 public enum AppRole {
     ROLE_APP_USER,
