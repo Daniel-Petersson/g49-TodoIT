@@ -46,16 +46,15 @@ public class PeopleDAOCollection implements IPeopleDAO {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                int personId = resultSet.getInt("person_id");
-                String firstName = resultSet.getString("first_name");
-                String lastName = resultSet.getString("last_name");
-                person = new Person(personId, firstName, lastName);
+                person = getPerson(resultSet, person);
             }
         } catch (SQLException e) {
             System.out.println("Error getting connection");
         }
         return person;
     }
+
+
 
     @Override
     public Collection<Person> findAll() {
@@ -65,10 +64,7 @@ public class PeopleDAOCollection implements IPeopleDAO {
              PreparedStatement statement = connection.prepareStatement(findAllQuery);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                int personId = resultSet.getInt("person_id");
-                String firstName = resultSet.getString("first_name");
-                String lastName = resultSet.getString("last_name");
-                personList.add(new Person(personId, firstName, lastName));
+                personList.add(getPerson(resultSet));
             }
         } catch (SQLException e) {
             System.out.println("Error getting connection");
@@ -86,10 +82,7 @@ public class PeopleDAOCollection implements IPeopleDAO {
             statement.setString(2, lastName);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    int personId = resultSet.getInt(1);
-                    String foundFirstName = resultSet.getString(2);
-                    String foundLastName = resultSet.getString(3);
-                    personsFound.add(new Person(personId, foundFirstName, foundLastName));
+                        personsFound.add(getPerson(resultSet));
                 }
             }
         } catch (SQLException e) {
@@ -135,5 +128,13 @@ public class PeopleDAOCollection implements IPeopleDAO {
             System.out.println("Error executing delete query");
         }
         return false;
+    }
+
+    private static Person getPerson(ResultSet resultSet) throws SQLException {
+        int personId = resultSet.getInt("person_id");
+        String firstName = resultSet.getString("first_name");
+        String lastName = resultSet.getString("last_name");
+        return new Person(personId, firstName, lastName);
+
     }
 }
