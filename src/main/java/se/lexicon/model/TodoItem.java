@@ -10,7 +10,7 @@ public class TodoItem {
     private String taskDescription;
     private LocalDate deadLine;
     private boolean done;
-    private Person creator;
+    private Person assigneeId;
 
     //Constructor
 
@@ -46,8 +46,8 @@ public class TodoItem {
         this.done = done;
     }
 
-    public void setCreator(Person creator) {
-        this.creator = creator;
+    public void setAssigneeId(Person assigneeId) {
+        this.assigneeId = assigneeId;
     }
 
     //Getters
@@ -72,8 +72,8 @@ public class TodoItem {
         return done;
     }
 
-    public Person getCreator() {
-        return creator;
+    public Person getAssigneeId() {
+        return assigneeId;
     }
 
     //Methods
@@ -86,12 +86,12 @@ public class TodoItem {
 
     @Override
     public String toString() {
-        return "ToDoItem { " + "id: " + id + ", Title: " + title + ", Description: " + taskDescription + ", Deadline: " + deadLine + ", Done: " + done + ", Creator: " + creator + "}";
+        return "ToDoItem { " + "id: " + id + ", Title: " + title + ", Description: " + taskDescription + ", Deadline: " + deadLine + ", Done: " + done + ", Creator: " + assigneeId + "}";
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, taskDescription, deadLine, done, creator);
+        return Objects.hash(id, title, taskDescription, deadLine, done, assigneeId);
     }
 
     @Override
@@ -99,6 +99,6 @@ public class TodoItem {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         TodoItem task = (TodoItem) obj;
-        return id == task.id && done == task.done && Objects.equals(title, task.title) && Objects.equals(taskDescription, task.taskDescription) && Objects.equals(deadLine, task.deadLine) && Objects.equals(creator, task.creator);
+        return id == task.id && done == task.done && Objects.equals(title, task.title) && Objects.equals(taskDescription, task.taskDescription) && Objects.equals(deadLine, task.deadLine) && Objects.equals(assigneeId, task.assigneeId);
     }
 }

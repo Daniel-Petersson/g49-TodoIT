@@ -3,7 +3,7 @@ package se.lexicon;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.lexicon.data.impl.AppUserDAOCollection;
-import se.lexicon.data.util.AppRole;
+import se.lexicon.util.AppRole;
 import se.lexicon.model.AppUser;
 import se.lexicon.exception.EntityAlreadyExistsException;
 import java.util.Optional;

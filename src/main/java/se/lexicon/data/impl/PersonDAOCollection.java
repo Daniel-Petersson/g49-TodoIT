@@ -2,7 +2,7 @@ package se.lexicon.data.impl;
 
 import se.lexicon.data.IPersonDAO;
 import se.lexicon.data.sequencers.IdSequencer;
-import se.lexicon.data.util.EntityType;
+import se.lexicon.util.EntityType;
 import se.lexicon.exception.EntityAlreadyExistsException;
 import se.lexicon.model.Person;
 import java.util.*;

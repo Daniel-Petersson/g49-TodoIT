@@ -1,6 +1,6 @@
 package se.lexicon.model;
 
-import se.lexicon.data.util.AppRole;
+import se.lexicon.util.AppRole;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package se.lexicon.data.util;
+package se.lexicon.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

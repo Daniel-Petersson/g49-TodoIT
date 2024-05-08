@@ -1,6 +1,6 @@
 package se.lexicon.data.sequencers;
 
-import se.lexicon.data.util.EntityType;
+import se.lexicon.util.EntityType;
 
 import java.util.EnumMap;
 

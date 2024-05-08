@@ -1,4 +1,4 @@
-package se.lexicon.data.util;
+package se.lexicon.util;
 
 public enum EntityType {
     PERSON,

@@ -7,10 +7,10 @@ public class Person {
     private int id;
     private String firstName;
     private String lastName;
-    private String email;
-    private AppUser credentials;
 
     //Constructors
+
+
 
     //Setters
 
@@ -29,21 +29,11 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public void setEmail(String email) {
-        if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Email cannot be null or empty");
-        }
-        this.email = email;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setCredentials(AppUser credentials) {
-        this.credentials = credentials;
-    }
-//Getters
+    //Getters
 
     public int getId() {
         return id;
@@ -57,14 +47,6 @@ public class Person {
         return lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public AppUser getCredentials() {
-        return credentials;
-    }
-
     //Methods
     public String getName() {
         return firstName + " " + lastName;
@@ -72,13 +54,13 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person { " + "id: " + id + ", Name: " + getName() + ", Email: " + email + "}";
+        return "Person { " + "id: " + id + ", Name: " + getName();
 
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email);
+        return Objects.hash(id, firstName, lastName);
     }
 
     @Override
@@ -86,6 +68,6 @@ public class Person {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Person person = (Person) obj;
-        return id == person.id && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(email, person.email);
+        return id == person.id && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName);
     }
 }
