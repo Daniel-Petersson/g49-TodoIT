@@ -46,7 +46,7 @@ public class PeopleDAOCollection implements IPeopleDAO {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                person = getPerson(resultSet, person);
+                person = getPerson(resultSet);
             }
         } catch (SQLException e) {
             System.out.println("Error getting connection");
