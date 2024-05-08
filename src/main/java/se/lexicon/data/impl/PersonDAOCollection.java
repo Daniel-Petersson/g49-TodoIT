@@ -39,17 +39,6 @@ public class PersonDAOCollection implements IPersonDAO {
         return Optional.ofNullable(persons.get(id));
     }
 
-    @Override
-    public Optional<Person> find(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
-        if (email == null || !email.matches(emailRegex)) {
-            throw new IllegalArgumentException("Invalid email format");
-        }
-
-        return persons.values().stream()
-                .filter(person -> person.getEmail().equalsIgnoreCase(email))
-                .findFirst();
-    }
 
     @Override
     public Collection<Person> find(Predicate<Person> filter) {
