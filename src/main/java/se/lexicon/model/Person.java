@@ -9,7 +9,20 @@ public class Person {
     private String lastName;
 
     //Constructors
+    //for creating person in person table.
 
+    public Person(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    //for fetching data from person table
+
+    public Person(int id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
 
     //Setters
