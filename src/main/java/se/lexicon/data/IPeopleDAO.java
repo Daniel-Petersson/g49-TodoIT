@@ -9,13 +9,13 @@ import java.util.function.Predicate;
 public interface IPeopleDAO {
     Person create(Person person);
 
-    Optional<Person> findById(int id);//int or Person for input?
+    Person findById(int id);//int or Person for input?
 
     Collection<Person> findAll();
 
-    Collection<Person> find(Predicate<Person> filter);
+    Collection<Person> findByName(String firstName, String lastName);
 
     Person update(Person person);
 
-    Optional<Boolean> remove(int id);
+    Boolean remove(int id);
 }
