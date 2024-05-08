@@ -11,11 +11,11 @@ public interface IPeopleDAO {
 
     Optional<Person> findById(int id);//int or Person for input?
 
-    Optional<Person> findAll();
+    Collection<Person> findAll();
 
     Collection<Person> find(Predicate<Person> filter);
 
     Person update(Person person);
 
-    Optional<Person> remove(int id);
+    Optional<Boolean> remove(int id);
 }

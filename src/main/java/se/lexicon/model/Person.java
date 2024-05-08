@@ -9,6 +9,11 @@ public class Person {
     private String lastName;
 
     //Constructors
+
+    public Person() {
+    }
+
+
     //for creating person in person table.
 
     public Person(String firstName, String lastName) {
