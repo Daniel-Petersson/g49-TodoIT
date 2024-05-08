@@ -7,11 +7,11 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public interface IPeopleDAO {
-    Person persist(Person person);
+    Person create(Person person);
 
-    Optional<Person> find(int id);//int or Person for input?
+    Optional<Person> findById(int id);//int or Person for input?
 
-    Optional<Person> find(String email);
+    Optional<Person> findAll();
 
     Collection<Person> find(Predicate<Person> filter);
 
