@@ -12,8 +12,6 @@ public interface IPersonDAO {
 
     Optional<Person> find(int id);//int or Person for input?
 
-    Optional<Person> find(String email);
-
     Collection<Person> find(Predicate<Person> filter);
 
     Optional<Person> remove(int id);
