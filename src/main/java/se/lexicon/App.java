@@ -37,6 +37,8 @@ public class App
         person = peopleDAO.update(person);
         System.out.println("Updated person: " + person);
 
+       // boolean removed = peopleDAO.remove(person.getId());
+        //System.out.println("Person removed: " + removed);
 
 
 
@@ -63,10 +65,8 @@ public class App
         Collection<TodoItem> unassignedTodoItems = todoItemsDAO.findUnassignedTodoItems();
         System.out.println("Unassigned todo items: " + unassignedTodoItems);
 
-        boolean removed = peopleDAO.remove(person.getId());
-        System.out.println("Person removed: " + removed);
 
-        removed = todoItemsDAO.remove(todoItem.getId());
+        boolean removed = todoItemsDAO.remove(todoItem.getId());
         System.out.println("Todo item removed: " + removed);
     }
 }
