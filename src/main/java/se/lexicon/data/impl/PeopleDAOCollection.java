@@ -113,9 +113,9 @@ public class PeopleDAOCollection implements IPeopleDAO {
 
     @Override
     public Boolean remove(int id) {
-        String deleteQuery = "DELETE FROM person WHERE person_id = ?";
+        String removeQuery = "DELETE FROM person WHERE person_id = ?";
         try (Connection connection = SQLConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+             PreparedStatement statement = connection.prepareStatement(removeQuery)) {
             statement.setInt(1, id);
             int rowsDeleted = statement.executeUpdate();
             if (rowsDeleted > 0) {
@@ -125,7 +125,7 @@ public class PeopleDAOCollection implements IPeopleDAO {
                 System.out.println("Person with " + id + " not found");
             }
         } catch (SQLException e) {
-            System.out.println("Error executing delete query");
+            System.out.println("Error executing remove query");
         }
         return false;
     }

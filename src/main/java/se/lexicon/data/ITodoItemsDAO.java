@@ -5,12 +5,12 @@ import se.lexicon.model.TodoItem;
 
 import java.util.Collection;
 
-public interface TodoItemsDAO {
-    TodoItem persist(TodoItem todoItem);
+public interface ITodoItemsDAO {
+    TodoItem create(TodoItem todoItem);
 
     Collection<TodoItem> findAll();
 
-    Collection<TodoItem> findById(int id);
+    TodoItem findById(int id);
 
     Collection<TodoItem> findByDone(boolean status);
 
@@ -20,7 +20,7 @@ public interface TodoItemsDAO {
 
     Collection<TodoItem> findUnassignedTodoItems();
 
-    TodoItem update(TodoItem item);
+    TodoItem update(TodoItem todoItem);
 
-    TodoItem remove(TodoItem item);
+    boolean remove(int id);
 }

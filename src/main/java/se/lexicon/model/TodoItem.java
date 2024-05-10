@@ -10,9 +10,20 @@ public class TodoItem {
     private String taskDescription;
     private LocalDate deadLine;
     private boolean done;
-    private Person assigneeId;
+    private Person assignee;
+    private int assigneeId;
 
     //Constructor
+
+    public TodoItem(int id, String title, String taskDescription, LocalDate deadLine, boolean done, int assigneeId) {
+        this.id = id;
+        this.title = title;
+        this.taskDescription = taskDescription;
+        this.deadLine = deadLine;
+        this.done = done;
+        this.assigneeId = assigneeId;
+    }
+
 
     //Setters
 
@@ -46,8 +57,8 @@ public class TodoItem {
         this.done = done;
     }
 
-    public void setAssigneeId(Person assigneeId) {
-        this.assigneeId = assigneeId;
+    public void setAssignee(Person assignee) {
+        this.assignee = assignee;
     }
 
     //Getters
@@ -72,7 +83,11 @@ public class TodoItem {
         return done;
     }
 
-    public Person getAssigneeId() {
+    public Person getAssignee() {
+        return assignee;
+    }
+
+    public int getAssigneeId() {
         return assigneeId;
     }
 
@@ -86,12 +101,12 @@ public class TodoItem {
 
     @Override
     public String toString() {
-        return "ToDoItem { " + "id: " + id + ", Title: " + title + ", Description: " + taskDescription + ", Deadline: " + deadLine + ", Done: " + done + ", Creator: " + assigneeId + "}";
+        return "ToDoItem { " + "id: " + id + ", Title: " + title + ", Description: " + taskDescription + ", Deadline: " + deadLine + ", Done: " + done + ", Creator: " + assignee + "}";
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, taskDescription, deadLine, done, assigneeId);
+        return Objects.hash(id, title, taskDescription, deadLine, done, assignee);
     }
 
     @Override
@@ -99,6 +114,6 @@ public class TodoItem {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         TodoItem task = (TodoItem) obj;
-        return id == task.id && done == task.done && Objects.equals(title, task.title) && Objects.equals(taskDescription, task.taskDescription) && Objects.equals(deadLine, task.deadLine) && Objects.equals(assigneeId, task.assigneeId);
+        return id == task.id && done == task.done && Objects.equals(title, task.title) && Objects.equals(taskDescription, task.taskDescription) && Objects.equals(deadLine, task.deadLine) && Objects.equals(assignee, task.assignee);
     }
 }
