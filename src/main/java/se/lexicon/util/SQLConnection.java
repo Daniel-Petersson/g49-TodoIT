@@ -1,29 +1,28 @@
-package se.lexicon.util;
-
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+package se.lexicon.data.util;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLConnection {
 
-    private static HikariConfig config = new HikariConfig();
-    private static HikariDataSource ds;
+    //Variables
+    private static final String _url = "jdbc:mysql://localhost:3306/todoit";
+    private static final String _userName = "username";
+    private static final String _password = "password";
 
-    static {
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/todoit");
-        config.setUsername("root");
-        config.setPassword("1234");
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        ds = new HikariDataSource(config);
-    }
+    //Setters
 
-    private SQLConnection() {}
 
-    public static Connection getConnection() throws SQLException {
-        return ds.getConnection();
+
+    //Methods
+    public static Connection getConnection(){
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(_url,_userName,_password);
+        }catch (SQLException e){
+            System.out.println("Error getting connection to: " +_url);
+        }
+        return connection;
     }
 }
