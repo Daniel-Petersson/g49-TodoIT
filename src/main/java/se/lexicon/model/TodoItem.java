@@ -1,5 +1,7 @@
 package se.lexicon.model;
 
+import se.lexicon.data.impl.PeopleDAOCollection;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -38,6 +40,25 @@ public class TodoItem {
         this.taskDescription = taskDescription;
         this.deadLine = deadLine;
         this.done = done;
+        this.assigneeId = assigneeId;
+    }
+
+    public TodoItem(String title, String taskDescription, LocalDate deadLine, boolean done, Person assignee, int assigneeId) {
+        this.title = title;
+        this.taskDescription = taskDescription;
+        this.deadLine = deadLine;
+        this.done = done;
+        this.assignee = assignee;
+        this.assigneeId = assigneeId;
+    }
+
+    public TodoItem(int id, String title, String taskDescription, LocalDate deadLine, boolean done, Person assignee, int assigneeId) {
+        this.id = id;
+        this.title = title;
+        this.taskDescription = taskDescription;
+        this.deadLine = deadLine;
+        this.done = done;
+        this.assignee = assignee;
         this.assigneeId = assigneeId;
     }
 
@@ -121,7 +142,7 @@ public class TodoItem {
 
     @Override
     public String toString() {
-        return "ToDoItem { " + "id: " + id + ", Title: " + title + ", Description: " + taskDescription + ", Deadline: " + deadLine + ", Done: " + done + ", Creator: " + assignee + "}";
+        return "ToDoItem { " + "id: " + id + ", Title: " + title + ", Description: " + taskDescription + ", Deadline: " + deadLine + ", Done: " + done + ", Assignee: " + assignee + ", AssigneeId: "+assigneeId+ "}";
     }
 
     @Override

@@ -1,9 +1,9 @@
 package se.lexicon.data.impl;
 
+import se.lexicon.data.IPeopleDAO;
 import se.lexicon.data.ITodoItemsDAO;
 import se.lexicon.model.Person;
 import se.lexicon.model.TodoItem;
-import se.lexicon.util.SQLConnection;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -17,16 +17,14 @@ public class TodoItemsDAOCollection implements ITodoItemsDAO {
     @Override
     public TodoItem create(TodoItem todoItem) {
         String insertQuery = "INSERT INTO todo_item(title,description,deadline,done,assignee_id)VALUES(?,?,?,?,?)";
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(insertQuery,PreparedStatement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, todoItem.getTitle());
-            statement.setString(2, todoItem.getTaskDescription());
-            statement.setDate(3,Date.valueOf(todoItem.getDeadLine()));
-            statement.setBoolean(4, todoItem.isDone());
-            if (todoItem.getAssigneeId() != 0) {
-                statement.setInt(5, todoItem.getAssigneeId());
-            } else {
-                statement.setNull(5, Types.INTEGER);
+            setTodoItem(todoItem,statement);
+            IPeopleDAO peopleDAO = new PeopleDAOCollection();
+            Person assignee = peopleDAO.findById(todoItem.getAssigneeId());
+            if (assignee == null && todoItem.getAssigneeId() != 0) {
+                System.out.println("Error: Assignee with id " + todoItem.getAssigneeId() + " does not exist");
+                return null;
             }
             int numberOfInsertedRows = statement.executeUpdate();
             if (numberOfInsertedRows>0){
@@ -51,7 +49,7 @@ public class TodoItemsDAOCollection implements ITodoItemsDAO {
     public Collection<TodoItem> findAll() {
         String findAllQuery = "SELECT * FROM todo_item";
         Collection<TodoItem> todoItems = new ArrayList<>();
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(findAllQuery);
         ResultSet resultSet = statement.executeQuery()){
             while (resultSet.next()){
@@ -68,7 +66,7 @@ public class TodoItemsDAOCollection implements ITodoItemsDAO {
     public TodoItem findById(int id) {
         String findByIdQuery = "SELECT * FROM todo_item WHERE todo_id = ?";
         TodoItem todoItem = null;
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(findByIdQuery))  {
             statement.setInt(1,id);
             ResultSet resultSet = statement.executeQuery();
@@ -86,7 +84,7 @@ public class TodoItemsDAOCollection implements ITodoItemsDAO {
     public Collection<TodoItem> findByDone(boolean status) {
         String findByDoneQuery = "SELECT * FROM todo_item WHERE done = ?";
         Collection<TodoItem> todoItems = new ArrayList<>();
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(findByDoneQuery)){
             statement.setBoolean(1,status);
             ResultSet resultSet = statement.executeQuery();
@@ -101,7 +99,7 @@ public class TodoItemsDAOCollection implements ITodoItemsDAO {
     public Collection<TodoItem> findByAssignee(int assigneeId) {
         String findByAssigneeIdQuery = "SELECT * FROM todo_item WHERE assignee_id = ?";
         Collection<TodoItem> todoItems = new ArrayList<>();
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(findByAssigneeIdQuery)){
             statement.setInt(1,assigneeId);
             ResultSet resultSet = statement.executeQuery();
@@ -116,7 +114,7 @@ public class TodoItemsDAOCollection implements ITodoItemsDAO {
     public Collection<TodoItem> findByAssignee(Person person) {
         String findByAssigneeQuery = "SELECT * FROM todo_item WHERE assignee_id = ?";
         Collection<TodoItem> todoItems = new ArrayList<>();
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(findByAssigneeQuery)){
             statement.setInt(1,person.getId());
             ResultSet resultSet = statement.executeQuery();
@@ -132,7 +130,7 @@ public class TodoItemsDAOCollection implements ITodoItemsDAO {
     public Collection<TodoItem> findUnassignedTodoItems() {
         String findByUnassignedQuery = "SELECT * FROM todo_item WHERE assignee_id is null";
         Collection<TodoItem> todoItems = new ArrayList<>();
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(findByUnassignedQuery)){
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) todoItems.add(getTodoItems(resultSet));
@@ -145,7 +143,7 @@ public class TodoItemsDAOCollection implements ITodoItemsDAO {
     @Override
     public TodoItem update(TodoItem todoItem) {
         String updateQuery = "UPDATE todo_item SET title = ?, description = ?, deadline = ?, done = ?, assignee_id =? WHERE todo_id = ?";
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(updateQuery)){
             setTodoItem(todoItem, statement);
             int rowsUpdated = statement.executeUpdate();
@@ -163,7 +161,7 @@ public class TodoItemsDAOCollection implements ITodoItemsDAO {
     @Override
     public boolean remove(int id) {
         String removeQuery = "DELETE FROM todo_item WHERE todo_id = ?";
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
         PreparedStatement statement = connection.prepareStatement(removeQuery)){
             statement.setInt(1,id);
             int rowsDeleted = statement.executeUpdate();
@@ -199,6 +197,10 @@ public class TodoItemsDAOCollection implements ITodoItemsDAO {
         boolean done = resultSet.getBoolean("done");
         int assigneeId = resultSet.getInt("assignee_id");
 
-        return new TodoItem(todoItemId, title, description, deadline, done, assigneeId);
+        PeopleDAOCollection peopleDAO =new PeopleDAOCollection();
+
+        Person assignee = peopleDAO.findById(assigneeId);
+
+        return new TodoItem(todoItemId, title, description, deadline, done, assignee, assigneeId);
     }
 }

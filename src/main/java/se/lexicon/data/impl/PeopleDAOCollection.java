@@ -2,7 +2,7 @@ package se.lexicon.data.impl;
 
 import se.lexicon.data.IPeopleDAO;
 import se.lexicon.model.Person;
-import se.lexicon.util.SQLConnection;
+
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class PeopleDAOCollection implements IPeopleDAO {
     @Override
     public Person create(Person person) {
         String insertQuery = "INSERT INTO person(first_name, last_name) values (?,?)";
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(insertQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, person.getFirstName());
             statement.setString(2, person.getLastName());
@@ -41,7 +41,7 @@ public class PeopleDAOCollection implements IPeopleDAO {
     public Person findById(int id) {
         String findByIdQuery = "SELECT * FROM person WHERE person_id = ?";
         Person person = null;
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(findByIdQuery)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -60,7 +60,7 @@ public class PeopleDAOCollection implements IPeopleDAO {
     public Collection<Person> findAll() {
         String findAllQuery = "SELECT * FROM person";
         List<Person> personList = new ArrayList<>();
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(findAllQuery);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -76,7 +76,7 @@ public class PeopleDAOCollection implements IPeopleDAO {
     public Collection<Person> findByName(String firstName, String lastName) {
         String findByNameQuery = "SELECT * FROM person WHERE first_name = ? AND last_name = ?";
         List<Person> personsFound = new ArrayList<>();
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(findByNameQuery)) {
             statement.setString(1, firstName);
             statement.setString(2, lastName);
@@ -94,7 +94,7 @@ public class PeopleDAOCollection implements IPeopleDAO {
     @Override
     public Person update(Person person) {
         String updateQuery = "UPDATE person SET first_name = ?, last_name = ? WHERE person_id = ?";
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setString(1, person.getFirstName());
             statement.setString(2, person.getLastName());
@@ -114,7 +114,7 @@ public class PeopleDAOCollection implements IPeopleDAO {
     @Override
     public Boolean remove(int id) {
         String removeQuery = "DELETE FROM person WHERE person_id = ?";
-        try (Connection connection = SQLConnection.getConnection();
+        try (Connection connection = se.lexicon.data.util.SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(removeQuery)) {
             statement.setInt(1, id);
             int rowsDeleted = statement.executeUpdate();
