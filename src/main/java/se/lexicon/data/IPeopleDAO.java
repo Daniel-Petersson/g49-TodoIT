@@ -3,8 +3,7 @@ package se.lexicon.data;
 import se.lexicon.model.Person;
 
 import java.util.Collection;
-import java.util.Optional;
-import java.util.function.Predicate;
+
 
 public interface IPeopleDAO {
     Person create(Person person);

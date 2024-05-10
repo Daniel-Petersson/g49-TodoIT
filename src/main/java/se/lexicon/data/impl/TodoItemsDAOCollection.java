@@ -4,25 +4,30 @@ import se.lexicon.data.ITodoItemsDAO;
 import se.lexicon.model.Person;
 import se.lexicon.model.TodoItem;
 import se.lexicon.util.SQLConnection;
-;
 
-import java.lang.reflect.Type;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.prefs.PreferenceChangeListener;
+
 
 
 public class TodoItemsDAOCollection implements ITodoItemsDAO {
 
     @Override
     public TodoItem create(TodoItem todoItem) {
-        String insertQuery = "INSERT INTO TODO_ITEM(title, description,deadline,done,assignee_id)VALUES(?,?,?,?,?)";
+        String insertQuery = "INSERT INTO todo_item(title,description,deadline,done,assignee_id)VALUES(?,?,?,?,?)";
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(insertQuery,PreparedStatement.RETURN_GENERATED_KEYS)) {
-            setTodoItem(todoItem, statement);
+            statement.setString(1, todoItem.getTitle());
+            statement.setString(2, todoItem.getTaskDescription());
+            statement.setDate(3,Date.valueOf(todoItem.getDeadLine()));
+            statement.setBoolean(4, todoItem.isDone());
+            if (todoItem.getAssigneeId() != 0) {
+                statement.setInt(5, todoItem.getAssigneeId());
+            } else {
+                statement.setNull(5, Types.INTEGER);
+            }
             int numberOfInsertedRows = statement.executeUpdate();
             if (numberOfInsertedRows>0){
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()){
@@ -37,6 +42,7 @@ public class TodoItemsDAOCollection implements ITodoItemsDAO {
             }
         }catch (SQLException e){
             System.out.println("Error inserting new todo item");
+            e.printStackTrace();
         }
         return todoItem;
     }
@@ -192,6 +198,7 @@ public class TodoItemsDAOCollection implements ITodoItemsDAO {
         LocalDate deadline = resultSet.getDate("deadline").toLocalDate();
         boolean done = resultSet.getBoolean("done");
         int assigneeId = resultSet.getInt("assignee_id");
+
         return new TodoItem(todoItemId, title, description, deadline, done, assigneeId);
     }
 }

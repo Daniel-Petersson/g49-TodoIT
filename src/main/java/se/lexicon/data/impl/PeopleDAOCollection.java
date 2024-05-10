@@ -13,7 +13,7 @@ public class PeopleDAOCollection implements IPeopleDAO {
 
     @Override
     public Person create(Person person) {
-        String insertQuery = "INSERT INTO PERSON(first_name, last_name) values (?,?)";
+        String insertQuery = "INSERT INTO person(first_name, last_name) values (?,?)";
         try (Connection connection = SQLConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(insertQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, person.getFirstName());

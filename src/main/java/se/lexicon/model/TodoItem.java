@@ -14,7 +14,7 @@ public class TodoItem {
     private int assigneeId;
 
     //Constructor
-
+    //executeQuery
     public TodoItem(int id, String title, String taskDescription, LocalDate deadLine, boolean done, int assigneeId) {
         this.id = id;
         this.title = title;
@@ -24,6 +24,22 @@ public class TodoItem {
         this.assigneeId = assigneeId;
     }
 
+    public TodoItem(String title, String taskDescription, LocalDate deadLine, boolean done) {
+        this.title = title;
+        this.taskDescription = taskDescription;
+        this.deadLine = deadLine;
+        this.done = done;
+    }
+
+    //UpdateQuery
+
+    public TodoItem(String title, String taskDescription, LocalDate deadLine, boolean done, int assigneeId) {
+        this.title = title;
+        this.taskDescription = taskDescription;
+        this.deadLine = deadLine;
+        this.done = done;
+        this.assigneeId = assigneeId;
+    }
 
     //Setters
 
@@ -61,6 +77,10 @@ public class TodoItem {
         this.assignee = assignee;
     }
 
+    public void setAssigneeId(int assigneeId) {
+        this.assigneeId = assigneeId;
+    }
+
     //Getters
 
     public int getId() {
@@ -88,7 +108,7 @@ public class TodoItem {
     }
 
     public int getAssigneeId() {
-        return assigneeId;
+        return this.assigneeId;
     }
 
     //Methods
